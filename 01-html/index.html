@@ -1,26 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Senny's To-Do List</title>
   </head>
   <body>
     <h1>Senny's To-Do List</h1>
     <div id="list">
       <ul>
-        <li class="tasks"><input type="checkbox" />Learn some HTML</li>
-        <button>delete</button>
+        <li class="tasks">
+          <input type="checkbox" id="existingTask1" name="existingTask1" />
+          <label for="existingTask1">Learn some HTML</label>
+          <button type="reset">delete</button>
+        </li>
 
-        <li class="tasks"><input type="checkbox" />Learn some CSS</li>
-        <button>delete</button>
+        <li class="tasks">
+          <input type="checkbox" id="existingTask2" name="existingTask2" />
+          <label for="existingTask2"> Learn some CSS</label>
+          <button type="reset">delete</button>
+        </li>
 
-        <li class="tasks"><input type="checkbox" />Become a web developer</li>
-        <button>delete</button>
+        <li class="tasks">
+          <input type="checkbox" name="existingTask />Become a web developer
+          <button type="reset">delete</button>
+        </li>
       </ul>
     </div>
-    <div>
-      <h1 class="newtask">New To-Do</h1>
-      <input type="text" /> <button type="submit">Create</button>
-    </div>
+
+    <h1 class="newtask">New To-Do</h1>
+    <form action="post">
+      <label for="newTask"></label>
+      <input type="text" id="newTask" name="newTask" />
+      <button type="submit">Create</button>
+    </form>
   </body>
 </html>
