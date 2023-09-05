@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
     <title>Senny's To-Do List</title>
   </head>
   <body>
@@ -21,7 +22,8 @@
         </li>
 
         <li class="tasks">
-          <input type="checkbox" name="existingTask />Become a web developer
+          <input type="checkbox" id="existingTask3" name="existingTask3" />
+          <label for="existingTask3">Become a web developer</label>
           <button type="reset">delete</button>
         </li>
       </ul>
@@ -29,8 +31,8 @@
 
     <h1 class="newtask">New To-Do</h1>
     <form action="post">
-      <label for="newTask"></label>
       <input type="text" id="newTask" name="newTask" />
+      <label for="newTask">""</label>
       <button type="submit">Create</button>
     </form>
   </body>
