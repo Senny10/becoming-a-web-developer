@@ -6,10 +6,35 @@
 		<title>Senny's To-Do List</title>
 	</head>
 	<body>
-		<h1>Senny's To-Do List</h1>
+		<h1
+			style="
+				background-color: black;
+				color: azure;
+				font-family: Arial, sans-serif;
+				padding: 5px;
+			"
+		>
+			Senny's To-Do List
+		</h1>
 		<div id="list">
-			<ul>
-				<li class="tasks">
+			<ul
+				style="
+					display: flex;
+					flex-direction: column;
+					row-gap: 10px;
+					justify-content: space-between;
+					list-style-type: none;
+					margin: 0;
+					padding: 0;
+				"
+			>
+				<li
+					style="
+						background-color: burlywood;
+						font-family: Arial, sans-serif;
+					"
+					class="tasks"
+				>
 					<input
 						type="checkbox"
 						id="existingTask1"
@@ -19,7 +44,13 @@
 					<button type="submit">delete</button>
 				</li>
 
-				<li class="tasks">
+				<li
+					style="
+						background-color: burlywood;
+						font-family: Arial, sans-serif;
+					"
+					class="tasks"
+				>
 					<input
 						type="checkbox"
 						id="existingTask2"
@@ -29,7 +60,13 @@
 					<button type="submit">delete</button>
 				</li>
 
-				<li class="tasks">
+				<li
+					style="
+						background-color: burlywood;
+						font-family: Arial, sans-serif;
+					"
+					class="tasks"
+				>
 					<input
 						type="checkbox"
 						id="existingTask3"
@@ -41,7 +78,9 @@
 			</ul>
 		</div>
 
-		<h1 class="newtask">New To-Do</h1>
+		<h1 style="font-family: Arial, sans-serif" class="newtask">
+			New To-Do
+		</h1>
 		<form action="post">
 			<input type="text" id="newTask" name="newTask" />
 			<label for="newTask">""</label>
