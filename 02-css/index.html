@@ -7,7 +7,8 @@
 		<title>Senny's To-Do List</title>
 	</head>
 	<body>
-		<h1>Senny's To-Do List</h1>
+		<header><h1>Senny's To-Do List</h1></header>
+
 		<div id="list">
 			<ul>
 				<li class="tasks">
@@ -41,12 +42,19 @@
 				</li>
 			</ul>
 		</div>
-
-		<h2 class="newtask">New To-Do</h2>
-		<form action="post">
-			<label for="newTask"> </label>
-			<input type="text" id="newTask" name="newTask" /><br />
-			<button type="submit" value="Submit">Create</button>
-		</form>
+		<div id="newTask">
+			<h2>New To-Do</h2>
+			<form action="post">
+				<!-- <label for="newTask">
+					New To Do
+					<span class="visually-hidden">
+						Text for screen reader users only here (e.g. providing
+						more information if required for their needs)
+					</span>
+				</label> -->
+				<input type="text" title="markTaskAsDone" name="newTask" />
+				<button type="submit" value="Submit">Create</button>
+			</form>
+		</div>
 	</body>
 </html>
