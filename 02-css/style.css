@@ -4,6 +4,7 @@ root {
 }
 header {
 	width: 500px;
+	background-color: var(--header-bg);
 }
 body {
 	padding: 0;
@@ -11,7 +12,7 @@ body {
 }
 h1 {
 	margin: 0;
-	background-color: black;
+
 	color: lightgray;
 	font-family: Arial, sans-serif;
 }
@@ -32,9 +33,13 @@ ul {
 	margin: 0;
 	padding: 0;
 }
+ul li:nth-child(even) {
+	background-color: burlywood;
+	color: black;
+}
 
 li {
-	background-color: burlywood;
+	background-color: var(--stripe-bg);
 	font-family: Arial, sans-serif;
 	padding: 5px;
 }
