@@ -1,78 +1,80 @@
 :root {
-	--stripe-bg: #f1f1f1;
-	--header-bg: #444444;
+  --stripe-bg: #f1f1f1;
+  --header-bg: #444444;
 }
-#form-list{
-	width: 500px;
+#form-list {
+  width: 500px;
 }
 header {
-	
-	background-color: var(--header-bg);
+  background-color: var(--header-bg);
 }
 body {
-	padding: 0;
-	margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 #foo {
-	text-align: center;
+  text-align: center;
 }
 header h1 {
-	color: blue;
+  color: lightgray;
 }
 h1 {
-	margin: 0;
-	color: lightgray;
-	font-family: Arial, sans-serif;
+  margin: 0;
+  color: lightgray;
+  font-family: Arial, sans-serif;
 }
 
 h2 {
-	font-family: Arial, sans-serif;
-	margin-bottom: 0;
-	font-weight: normal;
-	color: lightgray;
+  font-family: Arial, sans-serif;
+  margin-bottom: 0;
+  font-weight: normal;
+  color: lightgray;
 }
 ul {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-content: center;
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 ul li:nth-child(even) {
-	background-color: burlywood;
-	color: black;
+  background-color: burlywood;
+  color: black;
 }
 ul li:nth-child(odd) {
-	background-color: grey;
-	color: black;
+  background-color: grey;
+  color: black;
 }
 
 li {
-	font-family: Arial, sans-serif;
-	padding: 5px;
+  display: flex;
+  flex-direction: row;
+  row-gap: 10px;
+  font-family: Arial, sans-serif;
+  padding: 5px;
 }
 
 li.taskButton {
-	padding: 5px 6px;
-	background-color: #e7e7e7;
-	color: black;
-	border: none;
-	border-radius: 5px;
+  padding: 5px 6px;
+  background-color: #e7e7e7;
+  color: black;
+  border: none;
+  border-radius: 5px;
 }
 
 input {
-	margin: 10px 0px 10px 0px;
+  margin: 10px 0px 10px 0px;
 }
 
 #newTask input {
-	width: 400px;
-	display: block;
+  width: 400px;
+  display: block;
 }
 
 #list {
-	margin-top: 10px;
+  margin-top: 10px;
 }
