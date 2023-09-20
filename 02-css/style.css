@@ -21,6 +21,7 @@ body {
 
 label {
 	padding: 5px;
+	width: 100%;
 }
 
 h1,
@@ -47,14 +48,21 @@ ul.tasks {
 ul.tasks li {
 	padding: 5px;
 	background-color: grey;
-	display: flex;
-	justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 ul.tasks li button {
 	padding: 5px;
 	background-color: burlywood;
 	color: black;
+	transition: 0.4s;
+	border-radius: 4rem;
+	float: right;
+ 
+}
+ul.tasks li button:hover {
+	background-color: #f1f1f1;
 }
 
 ul.tasks li:nth-child(even) {
@@ -65,8 +73,17 @@ ul.tasks li:nth-child(even) {
 ul.tasks li:nth-child(even) button {
 	background-color: grey;
 	color: lightgray;
+	transition: 0.4s;
+}
+ul.tasks li:nth-child(even) button:hover {
+	background-color: #f1f1f1;
+	color: black;
 }
 
+label input {
+	width: 300px;
+	padding: 10px;
+}
 #error_container {
 	background-color: red;
 }
