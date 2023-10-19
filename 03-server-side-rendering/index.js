@@ -56,7 +56,8 @@ const mainTemplate = (option, content) => `<!DOCTYPE html>
 const renderOptions = (listOfOptions) => {
 	let listHtml = "";
 	listOfOptions.forEach(
-		(option) => (listHtml += `<option value=${option.name}>${option.name}</option>)`)
+		(option) =>
+			(listHtml += `<option value=${option.name}>${option.name}</option>)`)
 	);
 
 	return listHtml;
@@ -90,16 +91,24 @@ app.use(express.static(path.join(__dirname, "public")));
 // * Routers
 app.get("/", (req, res) => {
 	const todos = getTodos();
-	const lists  = getLists();
+	const lists = getLists();
 	const html = mainTemplate(renderOptions(lists), renderTodos(todos));
 	res.send(html);
 });
 app.get("/lists/:listId", (req, res) => {
 	const { listId } = req.params;
 	const todos = getTodos(listId);
-	const lists  = getLists();
+	const lists = getLists();
 	const html = mainTemplate(renderOptions(lists), renderTodos(todos));
 	res.send(html);
+});
+app.post("/lists/:listId/add-todo", (req, res) => {
+	const newList = req.body.listname;
+	const newTask = {
+		task: req.body.task,
+		complete: req.body.complete,
+	};
+	addTodos(newList, newTask);
 });
 
 //* Server Port
