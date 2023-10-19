@@ -25,8 +25,12 @@ function getLists() {
 	}));
 }
 
-function getTodos(list) {
+function getTodos(list = "default") {
 	return todos[list].todos;
 }
 
-export default { getLists, getTodos };
+function addTodos(listId, todoRecord) {
+	const newTodo = { id: "", task: "", complete: "" };
+}
+
+module.exports = { getLists, getTodos };
