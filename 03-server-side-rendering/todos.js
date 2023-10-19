@@ -30,7 +30,14 @@ function getTodos(list = "default") {
 }
 
 function addTodos(listId, todoRecord) {
-	const newTodo = { id: "", task: "", complete: "" };
+	const { task, complete } = todoRecord;
+
+	const newTodo = {
+		id: todos[listId].length + 1,
+		task: task,
+		complete: complete,
+	};
+	return [...todos[listId].todos, newTodo];
 }
 
-module.exports = { getLists, getTodos };
+module.exports = { getLists, getTodos, addTodos };
