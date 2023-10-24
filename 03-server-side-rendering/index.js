@@ -2,10 +2,10 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const port = process.env.PORT || 8000;
-const { getTodos, getLists } = require("./todos");
+const { getTodos, getLists, addTodo } = require("./todos");
 
 // * Render Logic
-const mainTemplate = (option, content) => `<!DOCTYPE html>
+const mainTemplate = (option, content, listId) => `<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
@@ -20,34 +20,45 @@ const mainTemplate = (option, content) => `<!DOCTYPE html>
 		<title>Senny's To-Do List</title>
 	</head>
 	<body>
-		<header><h1 class="title">Senny's To-Do List</h1></header>
+		<header>
+		<h1 class="title">Senny's To-Do List</h1>
+		</header>
 		<main>
-            <section>
-			<label for="listOfTasklists">Your List:</label>
-			<select name="" id="listOfTasklists">
-			${option}
-			</select>
-			
-			</section>
-			<section>
-				${content}
-			</section>
-			<section>
-				<ul class="newTask">
+			<form action="/lists/${listId}/" method="GET">
+				<section>
+				<ul class="listOfLists">
 					<li>
-						<label>
-							<span>New To-do:</span>
-							<input
-								id="new_task"
-								type="text"
-								name="new_task"
-								placeholder="What do you have to do next?"
-							/>
-						</label>
-						<button type="button">Create</button>
+						<label for="listOfTasklists">Your List:</label>
+						<select name="listname" id="listOfTasklists">
+						${option}
+						</select>
 					</li>
 				</ul>
-			</section>
+					
+				</section>
+				<section>
+					${content}
+				</section>
+			</form>
+            
+			<form action="/lists/${listId}/add-todo" method="POST">
+				<section>
+					<ul class="newTask">
+						<li>
+						<label>
+								<span>New To-do:</span>
+								<input
+									id="new_task"
+									type="text"
+									name="task"
+									placeholder="What do you have to do next?"
+								/>
+							</label>
+							<button type="submit">Create</button>
+						</li>
+					</ul>
+				</section>
+			</form>
 		</main>
 	</body>
 </html>
@@ -59,7 +70,6 @@ const renderOptions = (listOfOptions) => {
 		(option) =>
 			(listHtml += `<option value=${option.name}>${option.name}</option>)`)
 	);
-
 	return listHtml;
 };
 
@@ -68,9 +78,7 @@ const renderTodos = (todos) => {
 	todos.forEach((todo) => {
 		todosHtml += renderTodo(todo);
 	});
-	return `<ul class="task">
-${todosHtml}
-</ul>`;
+	return `<ul class="task">${todosHtml}</ul>`;
 };
 
 const renderTodo = (todo) =>
@@ -90,25 +98,23 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // * Routers
 app.get("/", (req, res) => {
-	const todos = getTodos();
-	const lists = getLists();
-	const html = mainTemplate(renderOptions(lists), renderTodos(todos));
-	res.send(html);
+	res.redirect(`/lists/default/`);
 });
 app.get("/lists/:listId", (req, res) => {
 	const { listId } = req.params;
 	const todos = getTodos(listId);
 	const lists = getLists();
-	const html = mainTemplate(renderOptions(lists), renderTodos(todos));
+	const html = mainTemplate(renderOptions(lists), renderTodos(todos), listId);
 	res.send(html);
 });
 app.post("/lists/:listId/add-todo", (req, res) => {
-	const newList = req.body.listname;
+	const listId = req.params.listId;
 	const newTask = {
 		task: req.body.task,
 		complete: req.body.complete,
 	};
-	addTodos(newList, newTask);
+	addTodo(listId, newTask);
+	res.redirect(`/lists/${listId}/`);
 });
 
 //* Server Port
