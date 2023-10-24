@@ -29,7 +29,7 @@ function getTodos(list = "default") {
 	return todos[list].todos;
 }
 
-function addTodos(listId, todoRecord) {
+function addTodo(listId, todoRecord) {
 	const { task, complete } = todoRecord;
 
 	const newTodo = {
@@ -37,7 +37,8 @@ function addTodos(listId, todoRecord) {
 		task: task,
 		complete: complete,
 	};
-	return [...todos[listId].todos, newTodo];
+	todos[listId].todos.push(newTodo)
+	
 }
 
-module.exports = { getLists, getTodos, addTodos };
+module.exports = { getLists, getTodos, addTodo };
