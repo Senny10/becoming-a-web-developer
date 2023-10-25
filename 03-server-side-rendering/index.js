@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const port = process.env.PORT || 8000;
-const { getTodos, getLists, addTodo } = require("./todos");
+const { getTodos, getLists, addTodo, updateTodo } = require("./todos");
 
 // * Render Logic
 const mainTemplate = (option, content, listId) => `<!DOCTYPE html>
@@ -37,7 +37,7 @@ const mainTemplate = (option, content, listId) => `<!DOCTYPE html>
 					
 				</section>
 			</form>
-			<form action="/lists/${listId}/" method="POST">
+			<form action="/lists/${listId}/update-todos" method="POST">
 					<section>
 						${content}
 					</section>
@@ -86,10 +86,6 @@ const renderOptions = (listOfOptions, listId) => {
 	return listHtml;
 };
 
-const listChangeHandler = () => {
-	alert("test 2");
-};
-
 const renderTodos = (todos) => {
 	let todosHtml = "";
 	todos.forEach((todo) => {
@@ -101,7 +97,7 @@ const renderTodos = (todos) => {
 const renderTodo = (todo) =>
 	`<li>
 <label
-  ><input type="checkbox" name="existingTask${todo.id}" ${
+  ><input type="checkbox" name="complete-${todo.id}" ${
 		todo.complete ? "checked" : ""
 	} />${sanitise(todo.task)}
 </label>
@@ -111,9 +107,6 @@ const renderTodo = (todo) =>
 sanitise = (value) => {
 	var ret = value.replace(/>/g, "&gt;");
 	ret = ret.replace(/</g, "&lt;");
-	// ret = ret.replace(/&quot;/g, '"');
-	// ret = ret.replace(/&apos;/g, "'");
-	// ret = ret.replace(/&amp;/g, '&');
 	return ret;
 };
 
@@ -145,6 +138,17 @@ app.post("/lists/:listId/add-todo", (req, res) => {
 	};
 	addTodo(listId, newTask);
 	res.redirect(`/lists/${listId}/`);
+});
+app.post("/lists/:listId/update-todos", (req, res) => {
+	// const listId = req.params.listId;
+	// const updatedTodo = {
+	// 	id: req.body.id,
+	// 	task: req.body.task,
+	// 	complete: req.body,
+	// };
+	// console.log(req.body.complete[req.body.id]);
+	// updateTodo(listId, updatedTodo);
+	// res.redirect(`/lists/${listId}/`);
 });
 
 //* Server Port
