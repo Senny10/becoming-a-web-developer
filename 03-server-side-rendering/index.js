@@ -24,23 +24,34 @@ const mainTemplate = (option, content, listId) => `<!DOCTYPE html>
 		<h1 class="title">Senny's To-Do List</h1>
 		</header>
 		<main>
-			<form action="/lists/${listId}/" method="GET">
+			<form action="/lists/${listId}/" method="POST">
 				<section>
 				<ul class="listOfLists">
 					<li>
 						<label for="listOfTasklists">Your List:</label>
-						<select name="listname" id="listOfTasklists">
+						<select name="listname" id="listOfTasklists" onchange="window.location.href = this.value">
 						${option}
 						</select>
 					</li>
 				</ul>
 					
 				</section>
-				<section>
-					${content}
-				</section>
 			</form>
-            
+			<form action="/lists/${listId}/" method="POST">
+					<section>
+						${content}
+					</section>
+					<ul class="task">
+						<li>
+							<label>
+							Edit your tasks: <button type="submit">Update</button>
+							</label>
+
+						</li>
+					</ul>
+					
+			</form>
+			
 			<form action="/lists/${listId}/add-todo" method="POST">
 				<section>
 					<ul class="newTask">
@@ -63,14 +74,23 @@ const mainTemplate = (option, content, listId) => `<!DOCTYPE html>
 	</body>
 </html>
 `;
-
-const renderOptions = (listOfOptions) => {
+const listDropdownHandler = () => {
+	const listMenu = document.getElementById("listOfTasklists");
+	listMenu.value;
+};
+const renderOptions = (listOfOptions, listId) => {
 	let listHtml = "";
-	listOfOptions.forEach(
-		(option) =>
-			(listHtml += `<option value=${option.name}>${option.name}</option>)`)
-	);
+	listOfOptions.forEach((option) => {
+		const isSelected = listId === option.id;
+		return (listHtml += `<option value="/lists/${option.id}" ${
+			isSelected ? "selected" : ""
+		}>${option.name}</option>)`);
+	});
 	return listHtml;
+};
+
+const listChangeHandler = () => {
+	alert("test 2");
 };
 
 const renderTodos = (todos) => {
@@ -86,10 +106,19 @@ const renderTodo = (todo) =>
 <label
   ><input type="checkbox" name="existingTask${todo.id}" ${
 		todo.complete ? "checked" : ""
-	} />${todo.task}
+	} />${sanitise(todo.task)}
 </label>
 <button type="button">Delete</button>
 </li>`;
+
+sanitise = (value) => {
+	var ret = value.replace(/>/g, "&gt;");
+	ret = ret.replace(/</g, "&lt;");
+	// ret = ret.replace(/&quot;/g, '"');
+	// ret = ret.replace(/&apos;/g, "'");
+	// ret = ret.replace(/&amp;/g, '&');
+	return ret;
+};
 
 // * Middleware functions
 app.use(express.urlencoded({ extended: false }));
@@ -104,7 +133,11 @@ app.get("/lists/:listId", (req, res) => {
 	const { listId } = req.params;
 	const todos = getTodos(listId);
 	const lists = getLists();
-	const html = mainTemplate(renderOptions(lists), renderTodos(todos), listId);
+	const html = mainTemplate(
+		renderOptions(lists, listId),
+		renderTodos(todos),
+		listId
+	);
 	res.send(html);
 });
 app.post("/lists/:listId/add-todo", (req, res) => {
