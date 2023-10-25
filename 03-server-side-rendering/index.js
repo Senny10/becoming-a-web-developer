@@ -74,10 +74,7 @@ const mainTemplate = (option, content, listId) => `<!DOCTYPE html>
 	</body>
 </html>
 `;
-const listDropdownHandler = () => {
-	const listMenu = document.getElementById("listOfTasklists");
-	listMenu.value;
-};
+
 const renderOptions = (listOfOptions, listId) => {
 	let listHtml = "";
 	listOfOptions.forEach((option) => {
