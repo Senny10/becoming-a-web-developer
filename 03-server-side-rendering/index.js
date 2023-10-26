@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const app = express();
 const path = require("path");
 const port = process.env.PORT || 8000;
@@ -25,7 +26,7 @@ const mainTemplate = (option, content, listId) => `<!DOCTYPE html>
 		</header>
 		<main>
 			<form action="/lists/${listId}/" method="POST">
-				<section>
+				<fieldset>
 				<ul class="listOfLists">
 					<li>
 						<label for="listOfTasklists">Your List:</label>
@@ -33,14 +34,13 @@ const mainTemplate = (option, content, listId) => `<!DOCTYPE html>
 						${option}
 						</select>
 					</li>
-				</ul>
-					
-				</section>
+				</ul>	
+				</fieldset>
 			</form>
 			<form action="/lists/${listId}/update-todos" method="POST">
-					<section>
+					<fieldset>
 						${content}
-					</section>
+					
 					<ul class="task">
 						<li>
 							<label>
@@ -49,11 +49,11 @@ const mainTemplate = (option, content, listId) => `<!DOCTYPE html>
 
 						</li>
 					</ul>
-					
+					</fieldset>
 			</form>
 			
-			<form action="/lists/${listId}/add-todo" method="POST">
-				<section>
+			<form action="/lists/${listId}/add-todo" method="post">
+				<fieldset>
 					<ul class="newTask">
 						<li>
 						<label>
@@ -68,7 +68,7 @@ const mainTemplate = (option, content, listId) => `<!DOCTYPE html>
 							<button type="submit">Create</button>
 						</li>
 					</ul>
-				</section>
+				</fieldset>
 			</form>
 		</main>
 	</body>
@@ -96,22 +96,23 @@ const renderTodos = (todos) => {
 
 const renderTodo = (todo) =>
 	`<li>
-<label
-  ><input type="checkbox" name="complete-${todo.id}" ${
+	<input type="checkbox" id="task-${todo.id}" name="complete-${todo.id}" ${
 		todo.complete ? "checked" : ""
-	} />${sanitise(todo.task)}
-</label>
-<button type="button">Delete</button>
-</li>`;
+	} />
+	<label for="task-${todo.id}">${sanitise(todo.task)}</label>
+	<button type="submit">Delete</button>
+	</li>`;
 
-sanitise = (value) => {
+function sanitise(value) {
 	var ret = value.replace(/>/g, "&gt;");
 	ret = ret.replace(/</g, "&lt;");
 	return ret;
-};
+}
 
 // * Middleware functions
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -140,15 +141,21 @@ app.post("/lists/:listId/add-todo", (req, res) => {
 	res.redirect(`/lists/${listId}/`);
 });
 app.post("/lists/:listId/update-todos", (req, res) => {
-	// const listId = req.params.listId;
-	// const updatedTodo = {
-	// 	id: req.body.id,
-	// 	task: req.body.task,
-	// 	complete: req.body,
-	// };
-	// console.log(req.body.complete[req.body.id]);
-	// updateTodo(listId, updatedTodo);
-	// res.redirect(`/lists/${listId}/`);
+	const listId = req.params.listId;
+	const completedTodos = req.body; //{ 'complete-1': 'on', 'complete-2': 'on' }
+	let updatedTodo = {};
+	const todos = getTodos(listId);
+	todos.forEach((todo) => {
+		if (completedTodos[`complete-${todo.id}`] === "on") {
+			updatedTodo = {
+				...todos,
+				complete: true,
+			};
+		}
+		updateTodo(listId, updatedTodo);
+		console.log(updatedTodo)
+	});
+	res.redirect(`/lists/${listId}/`);
 });
 
 //* Server Port

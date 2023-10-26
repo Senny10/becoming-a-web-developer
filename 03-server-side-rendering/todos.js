@@ -43,10 +43,10 @@ function addTodo(listId, todoRecord) {
 function updateTodo(listId, todoRecord) {
 	const { id, task, complete } = todoRecord;
 	const todosObj = todos[listId].todos;
-	if (todosObj.id === id) {
-		todosObj.task = task;
-		todosObj.complete = complete
-	}
+	todosObj.id = id;
+	todosObj.task = task;
+	todosObj.complete = complete;
+	return todosObj;
 }
 
 module.exports = { getLists, getTodos, addTodo, updateTodo };

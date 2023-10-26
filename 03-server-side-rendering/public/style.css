@@ -18,6 +18,10 @@ body {
 	}
 }
 
+fieldset {
+    background-color: black;
+}
+
 label {
 	padding: 5px;
 	width: 100%;
