@@ -3,7 +3,13 @@ const bodyParser = require("body-parser");
 const app = express();
 const path = require("path");
 const port = process.env.PORT || 8000;
-const { getTodos, getLists, addTodo, updateTodo } = require("./todos");
+const {
+	getTodos,
+	getLists,
+	addTodo,
+	updateTodo,
+	deleteTodo,
+} = require("./todos");
 
 // * Render Logic
 const mainTemplate = (option, content, listId) => `<!DOCTYPE html>
@@ -100,7 +106,7 @@ const renderTodo = (todo) =>
 		todo.complete ? "checked" : ""
 	} />
 	<label for="task-${todo.id}">${sanitise(todo.task)}</label>
-	<button type="submit" name="delete" id="todo">Delete</button>
+	<button type="submit" name="deleted" value="task-${todo.id}">Delete</button>
 	</li>`;
 
 function sanitise(value) {
@@ -142,12 +148,13 @@ app.post("/lists/:listId/add-todo", (req, res) => {
 });
 app.post("/lists/:listId/update-todos", (req, res) => {
 	const listId = req.params.listId;
-	const completedTodos = req.body; //{ 'complete-1': 'on', 'complete-2': 'on' }
+	const updatedTodos = req.body; //{ 'complete-1': 'on','complete-2': 'on','complete-3': 'on',delete: 'task-3' }
 	let updatedTodo = {};
 	const todos = getTodos(listId);
 	todos.forEach((todo) => {
-		const desiredState = completedTodos[`complete-${todo.id}`] === "on";
+		const desiredState = updatedTodos[`complete-${todo.id}`] === "on";
 		const actualState = todo.complete;
+		const deleted = updatedTodos["deleted"] === `task-${todo.id}`;
 		if (desiredState !== actualState) {
 			updatedTodo = {
 				...todo,
@@ -155,12 +162,14 @@ app.post("/lists/:listId/update-todos", (req, res) => {
 			};
 			updateTodo(listId, updatedTodo);
 		}
+		if (deleted) {
+			updatedTodo = deleteTodo(listId, todo.id);
+			
+		}
 	});
 
 	res.redirect(`/lists/${listId}/`);
 });
-
-
 
 //* Server Port
 app.listen(port, () => {
