@@ -100,7 +100,7 @@ const renderTodo = (todo) =>
 		todo.complete ? "checked" : ""
 	} />
 	<label for="task-${todo.id}">${sanitise(todo.task)}</label>
-	<button type="submit">Delete</button>
+	<button type="submit" name="delete" id="todo">Delete</button>
 	</li>`;
 
 function sanitise(value) {
@@ -146,17 +146,21 @@ app.post("/lists/:listId/update-todos", (req, res) => {
 	let updatedTodo = {};
 	const todos = getTodos(listId);
 	todos.forEach((todo) => {
-		if (completedTodos[`complete-${todo.id}`] === "on") {
+		const desiredState = completedTodos[`complete-${todo.id}`] === "on";
+		const actualState = todo.complete;
+		if (desiredState !== actualState) {
 			updatedTodo = {
-				...todos,
-				complete: true,
+				...todo,
+				complete: desiredState,
 			};
+			updateTodo(listId, updatedTodo);
 		}
-		updateTodo(listId, updatedTodo);
-		console.log(updatedTodo)
 	});
+
 	res.redirect(`/lists/${listId}/`);
 });
+
+
 
 //* Server Port
 app.listen(port, () => {
