@@ -128,7 +128,7 @@ app.get("/", (req, res) => {
 });
 app.get("/lists/:listId", (req, res) => {
 	const { listId } = req.params;
-	const todos = getTodos(listId);
+	let todos = getTodos(listId);
 	const lists = getLists();
 	const html = mainTemplate(
 		renderOptions(lists, listId),
@@ -149,8 +149,8 @@ app.post("/lists/:listId/add-todo", (req, res) => {
 app.post("/lists/:listId/update-todos", (req, res) => {
 	const listId = req.params.listId;
 	const updatedTodos = req.body; //{ 'complete-1': 'on','complete-2': 'on','complete-3': 'on',delete: 'task-3' }
-	let updatedTodo = {};
-	const todos = getTodos(listId);
+	let updatedTodo;
+	let todos = getTodos(listId);
 	todos.forEach((todo) => {
 		const desiredState = updatedTodos[`complete-${todo.id}`] === "on";
 		const actualState = todo.complete;
@@ -163,8 +163,7 @@ app.post("/lists/:listId/update-todos", (req, res) => {
 			updateTodo(listId, updatedTodo);
 		}
 		if (deleted) {
-			updatedTodo = deleteTodo(listId, todo.id);
-			
+			deleteTodo(listId, todo.id);
 		}
 	});
 
