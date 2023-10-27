@@ -53,9 +53,9 @@ function updateTodo(listId, todoRecord) {
 
 function deleteTodo(listId, taskId) {
 	let newTodos;
-	const todosArray = todos[listId].todos;
+	let todosArray = todos[listId].todos;
 	newTodos = todosArray.filter((todo) => todo.id !== taskId);
-	return newTodos
+	todos[listId].todos = newTodos;
 }
 
 module.exports = { getLists, getTodos, addTodo, updateTodo, deleteTodo };
