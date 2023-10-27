@@ -9,6 +9,7 @@ const {
 	addTodo,
 	updateTodo,
 	deleteTodo,
+	addNewList,
 } = require("./todos");
 
 // * Render Logic
