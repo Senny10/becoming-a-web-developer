@@ -41,12 +41,19 @@ function addTodo(listId, todoRecord) {
 }
 
 function updateTodo(listId, todoRecord) {
-	const { id, task, complete } = todoRecord;
-	const todosObj = todos[listId].todos;
-	todosObj.id = id;
-	todosObj.task = task;
-	todosObj.complete = complete;
-	return todosObj;
+	const { id } = todoRecord;
+	const todosArray = todos[listId].todos;
+	todosArray.forEach((todo) => {
+		if (todo.id === id) {
+			todo.complete = todoRecord.complete;
+			todo.task = todoRecord.task;
+		}
+	});
 }
 
-module.exports = { getLists, getTodos, addTodo, updateTodo };
+function deleteTodo(listId, taskId) {
+	const todosArray = todos[listId].todos;
+	todosArray.filter((todo) => todo.id !== taskId);
+}
+
+module.exports = { getLists, getTodos, addTodo, updateTodo, deleteTodo };
