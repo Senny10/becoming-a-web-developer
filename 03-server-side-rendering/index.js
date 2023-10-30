@@ -63,13 +63,22 @@ const mainTemplate = (option, content, listId) => `<!DOCTYPE html>
 				<fieldset>
 					<ul class="newTask">
 						<li>
-						<label>
+							<label>
 								<span>New To-do:</span>
 								<input
 									id="new_task"
 									type="text"
 									name="task"
 									placeholder="What do you have to do next?"
+								/>
+							</label>
+							<label>
+								<span>New List:</span>
+								<input
+									id="new_list"
+									type="text"
+									name="list"
+									placeholder="Add a new list"
 								/>
 							</label>
 							<button type="submit">Create</button>
@@ -140,19 +149,29 @@ app.get("/lists/:listId", (req, res) => {
 });
 app.post("/lists/:listId/add-todo", (req, res) => {
 	const listId = req.params.listId;
+	const newListId = req.body.list;
 	const newTask = {
 		task: req.body.task,
-		complete: req.body.complete,
+		complete: "",
 	};
-	addTodo(listId, newTask);
+
+	if (newTask.task) {
+		addTodo(listId, newTask);
+	}
+
+	if (newListId) {
+		
+		addNewList(newListId);
+	}
 	res.redirect(`/lists/${listId}/`);
 });
 app.post("/lists/:listId/update-todos", (req, res) => {
 	const listId = req.params.listId;
-	const updatedTodos = req.body; //{ 'complete-1': 'on','complete-2': 'on','complete-3': 'on',delete: 'task-3' }
+	const updatedTodos = req.body;
 	let updatedTodo;
 	let todos = getTodos(listId);
 	todos.forEach((todo) => {
+		console.log(todos)
 		const desiredState = updatedTodos[`complete-${todo.id}`] === "on";
 		const actualState = todo.complete;
 		const deleted = updatedTodos["deleted"] === `task-${todo.id}`;

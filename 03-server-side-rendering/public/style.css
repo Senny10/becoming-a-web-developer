@@ -19,7 +19,7 @@ body {
 }
 
 fieldset {
-    background-color: black;
+	background-color: black;
 }
 
 label {
@@ -139,6 +139,7 @@ ul.newTask li button:hover {
 }
 
 #new_task,
+#new_list,
 #listOfTasklists {
 	background-color: white;
 	width: 70%;
