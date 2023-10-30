@@ -57,24 +57,8 @@ function deleteTodo(listId, taskId) {
 	newTodos = todosArray.filter((todo) => todo.id !== taskId);
 	todos[listId].todos = newTodos;
 }
-// sample = default: {
-// 	name: "Default",
-// 	todos: [
-// 		{ id: 1, task: "Learn some HTML", complete: true },
-// 		{ id: 2, task: "Learn some CSS", complete: true },
-// 		{ id: 3, task: "Become a web developer", complete: false },
-// 	],
-// }
 
-// object = { ...object,
-// 	...{ product_code: '90210',
-// 		  brand: 'Phillips66',
-// 		  category: 'LUBES AND GREASES',
-// 		  description: 'cuatro cinco seis',
-// 		  price: '500.00',
-// 		  quantity: '5'
-// 		}
-// 	}
+
 function addNewList(listId) {
 	const newList = { listId: { name: listId.toUpperCase(), todos: [] } };
 	todos = { ...todos, ...newList };
