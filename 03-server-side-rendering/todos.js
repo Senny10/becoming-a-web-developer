@@ -58,7 +58,6 @@ function deleteTodo(listId, taskId) {
 	todos[listId].todos = newTodos;
 }
 
-
 function addNewList(listId) {
 	const newList = { listId: { name: listId.toUpperCase(), todos: [] } };
 	todos = { ...todos, ...newList };
