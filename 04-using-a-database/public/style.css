@@ -18,6 +18,10 @@ body {
 	}
 }
 
+fieldset {
+	background-color: black;
+}
+
 label {
 	padding: 5px;
 	width: 100%;
@@ -94,12 +98,14 @@ ul.tasks li:nth-child(even) button:hover {
 	color: black;
 }
 
-ul.newTask {
+ul.newTask,
+ul.listOfLists {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
-ul.newTask li {
+ul.newTask li,
+ul.listOfLists li {
 	padding: 10px;
 	background-color: var(--new-task);
 	display: flex;
@@ -132,7 +138,9 @@ ul.newTask li button:hover {
 	background-color: var(--odd-task);
 }
 
-#new_task {
+#new_task,
+#new_list,
+#listOfTasklists {
 	background-color: white;
 	width: 70%;
 	padding: 10px 14px;
