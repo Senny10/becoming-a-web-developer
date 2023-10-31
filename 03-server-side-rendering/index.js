@@ -152,7 +152,7 @@ app.post("/lists/:listId/add-todo", (req, res) => {
 	const newListId = req.body.list;
 	const newTask = {
 		task: req.body.task,
-		complete: "",
+		complete: false,
 	};
 
 	if (newTask.task) {
