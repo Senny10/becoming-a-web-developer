@@ -31,12 +31,13 @@ function getTodos(list = "default") {
 
 function addTodo(listId, todoRecord) {
 	const { task, complete } = todoRecord;
-
+	const todosArray = todos[listId].todos
 	const newTodo = {
-		id: todos[listId].length + 1,
+		id: todosArray.length + 1,
 		task: task,
 		complete: complete,
 	};
+	console.log(newTodo.id);
 	todos[listId].todos.push(newTodo);
 }
 
