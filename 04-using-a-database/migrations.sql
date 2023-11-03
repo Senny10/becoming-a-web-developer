@@ -1,4 +1,4 @@
--- Add your SQL statements in here
+-- For table creation
 CREATE TABLE lists (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     url_id TEXT NOT NULL,
