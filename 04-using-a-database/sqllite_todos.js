@@ -8,36 +8,43 @@ let db = new sqlite3.Database("./todos.db", sqlite3.OPEN_READWRITE, (err) => {
 	console.log("Connected to the Todos database.");
 });
 
-function getTodos(list = "default") {
-	return db.all(
-		`SELECT * FROM todos JOIN lists ON lists.id = todos.list_id WHERE lists.name = ?`,
+async function getTodosFromDB(list) {
+	let tasks = [];
+	db.all(
+		`SELECT task FROM todos JOIN lists ON lists.id = todos.list_id WHERE lists.url_id = ?`,
 		[list],
 		(err, rows) => {
 			if (err) {
 				console.error(err.message);
 			}
+
 			rows.forEach((row) => {
-				console.log(row.task);
+				tasks.push(row.task);
 			});
 		}
 	);
+	console.log(tasks);
+	return tasks;
 }
-getTodos();
-async function addTodo(task) {}
+getTodosFromDB();
+async function addTodoFromDB(task) {}
 
-async function updateTodo(todo) {}
+async function updateTodoFromDB(todo) {}
 
-async function deleteTodo(id) {}
+async function deleteTodoFromDB(id) {}
 
-async function getLists() {}
+async function getListsFromDB() {
+	return null;
+}
 
-async function getList() {}
+async function getListFromDB() {}
 
-async function addList(list) {}
+async function addListToDB(list) {}
 
-async function updateList(list) {}
+async function updateListFromDB(list) {}
 
-async function deleteList(id) {}
+async function deleteListFromDB(id) {}
+
 db.close((err) => {
 	if (err) {
 		console.error(err.message);
@@ -45,13 +52,13 @@ db.close((err) => {
 	console.log("Close the database connection.");
 });
 module.exports = {
-	getTodos,
-	addTodo,
-	updateTodo,
-	deleteTodo,
-	getLists,
-	getList,
-	addList,
-	updateList,
-	deleteList,
+	getTodosFromDB,
+	addTodoFromDB,
+	updateTodoFromDB,
+	deleteTodoFromDB,
+	getListsFromDB,
+	getListFromDB,
+	addListToDB,
+	updateListFromDB,
+	deleteListFromDB,
 };

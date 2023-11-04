@@ -9,9 +9,10 @@ let db;
 	});
 })();
 
-async function getTodos(list = "default") {
-	const sql = `SELECT * FROM todos JOIN lists ON lists.id = todos.list_id WHERE lists.name = ?`;
-	return await db.all(sql, [list], (err, rows) => {
+async function getTodos() {
+	
+	const sql = `SELECT * FROM todos JOIN lists ON lists.id = todos.list_id`;
+	return await db.all(sql, [], (err, rows) => {
 		if (err) {
 			throw err;
 		}

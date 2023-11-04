@@ -1,14 +1,4 @@
-const {
-	getTodos,
-	addTodo,
-	updateTodo,
-	deleteTodo,
-	getLists,
-	getList,
-	addList,
-	updateList,
-	deleteList,
-} = require("./todos-sqlite");
+const { getTodosFromDB, getListsFromDB } = require("./sqllite_todos");
 
 let todos = {
 	default: {
@@ -30,15 +20,11 @@ let todos = {
 };
 
 function getLists() {
-	return Object.entries(todos).map(([id, list]) => ({
-		id,
-		name: list.name,
-		count: list.todos.length,
-	}));
+	return getListsFromDB();
 }
 
 function getTodos(list = "default") {
-	return todos[list].todos;
+	return getTodosFromDB(list);
 }
 
 function addTodo(listId, todoRecord) {
