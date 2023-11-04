@@ -1,3 +1,15 @@
+const {
+	getTodos,
+	addTodo,
+	updateTodo,
+	deleteTodo,
+	getLists,
+	getList,
+	addList,
+	updateList,
+	deleteList,
+} = require("./todos-sqlite");
+
 let todos = {
 	default: {
 		name: "Default",
@@ -31,7 +43,7 @@ function getTodos(list = "default") {
 
 function addTodo(listId, todoRecord) {
 	const { task, complete } = todoRecord;
-	const todosArray = todos[listId].todos
+	const todosArray = todos[listId].todos;
 	const newTodo = {
 		id: todosArray.length + 1,
 		task: task,

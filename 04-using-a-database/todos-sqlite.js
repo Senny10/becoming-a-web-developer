@@ -3,18 +3,24 @@ const { open } = require("sqlite");
 
 let db;
 (async () => {
-  db = await open({
-    filename: "./todos.db",
-    driver: sqlite3.Database,
-  });
+	db = await open({
+		filename: "./todos.db",
+		driver: sqlite3.Database,
+	});
 })();
 
 async function getTodos(list = "default") {
-  return await db.all(
-    `SELECT * FROM todos JOIN lists ON lists.id = todos.list_id WHERE lists.name = '${list}'`
-  );
+	const sql = `SELECT * FROM todos JOIN lists ON lists.id = todos.list_id WHERE lists.name = ?`;
+	return await db.all(sql, [list], (err, rows) => {
+		if (err) {
+			throw err;
+		}
+		rows.forEach((row) => {
+			console.log(row.task);
+		});
+	});
 }
-
+getTodos();
 async function addTodo(task) {}
 
 async function updateTodo(todo) {}
@@ -32,13 +38,13 @@ async function updateList(list) {}
 async function deleteList(id) {}
 
 module.exports = {
-  getTodos,
-  addTodo,
-  updateTodo,
-  deleteTodo,
-  getLists,
-  getList,
-  addList,
-  updateList,
-  deleteList,
+	getTodos,
+	addTodo,
+	updateTodo,
+	deleteTodo,
+	getLists,
+	getList,
+	addList,
+	updateList,
+	deleteList,
 };
