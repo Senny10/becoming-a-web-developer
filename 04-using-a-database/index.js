@@ -93,6 +93,7 @@ const mainTemplate = (option, content, listId) => `<!DOCTYPE html>
 
 const renderOptions = (listOfOptions, listId) => {
 	let listHtml = "";
+
 	listOfOptions.forEach((option) => {
 		const isSelected = listId === option.id;
 		return (listHtml += `<option value="/lists/${option.id}" ${
@@ -136,10 +137,11 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
 	res.redirect(`/lists/default/`);
 });
-app.get("/lists/:listId", (req, res) => {
+app.get("/lists/:listId", async (req, res) => {
 	const { listId } = req.params;
-	let todos = getTodos(listId);
-	const lists = getLists();
+	let todos = await getTodos(listId);
+	const lists = await getLists();
+	console.log("lists from DB ====>", lists);
 	const html = mainTemplate(
 		renderOptions(lists, listId),
 		renderTodos(todos),
@@ -160,7 +162,6 @@ app.post("/lists/:listId/add-todo", (req, res) => {
 	}
 
 	if (newListId) {
-		
 		addNewList(newListId);
 	}
 	res.redirect(`/lists/${listId}/`);
@@ -171,7 +172,7 @@ app.post("/lists/:listId/update-todos", (req, res) => {
 	let updatedTodo;
 	let todos = getTodos(listId);
 	todos.forEach((todo) => {
-		console.log(todos)
+		console.log(todos);
 		const desiredState = updatedTodos[`complete-${todo.id}`] === "on";
 		const actualState = todo.complete;
 		const deleted = updatedTodos["deleted"] === `task-${todo.id}`;

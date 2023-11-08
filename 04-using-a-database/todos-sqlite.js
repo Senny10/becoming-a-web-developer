@@ -1,51 +1,59 @@
-const sqlite3 = require("sqlite3");
+const sqlite3 = require("sqlite3").verbose();
 const { open } = require("sqlite");
 
-let db;
-(async () => {
-	db = await open({
-		filename: "./todos.db",
-		driver: sqlite3.Database,
-	});
-})();
+let db = new sqlite3.Database("./todos.db", (err) => {
+	if (err) {
+		console.error(err.message);
+	}
+	console.log("Connected to the SQlite database.");
+});
 
-async function getTodos() {
-	
-	const sql = `SELECT * FROM todos JOIN lists ON lists.id = todos.list_id`;
-	return await db.all(sql, [], (err, rows) => {
+async function getTodosFromDB(list) {
+	const sql = `SELECT task FROM todos JOIN lists ON lists.id = todos.list_id WHERE lists.url_id = ?`;
+
+	await db.all(sql, list, (err, rows) => {
+		let tasks = [];
 		if (err) {
 			throw err;
 		}
-		rows.forEach((row) => {
-			console.log(row.task);
-		});
+		rows.forEach((row) => tasks.push(row.task));
+		return tasks;
 	});
 }
-getTodos();
-async function addTodo(task) {}
+async function addTodoFromDB(task) {}
 
-async function updateTodo(todo) {}
+async function updateTodoFromDB(todo) {}
 
-async function deleteTodo(id) {}
+async function deleteTodoFromDB(id) {}
 
-async function getLists() {}
+async function getListsFromDB() {
+	const sql = "SELECT name FROM lists;";
+	await db.all(sql, (err, rows) => {
+		let lists = [];
+		if (err) {
+			throw err;
+		}
+		rows.forEach((row) => lists.push(row.name));
+		return lists;
+	});
+}
 
-async function getList() {}
+async function getListFromDB() {}
 
-async function addList(list) {}
+async function addListFromDB(list) {}
 
-async function updateList(list) {}
+async function updateListFromDB(list) {}
 
-async function deleteList(id) {}
+async function deleteListFromDB(id) {}
 
 module.exports = {
-	getTodos,
-	addTodo,
-	updateTodo,
-	deleteTodo,
-	getLists,
-	getList,
-	addList,
-	updateList,
-	deleteList,
+	getTodosFromDB,
+	addTodoFromDB,
+	updateTodoFromDB,
+	deleteTodoFromDB,
+	getListsFromDB,
+	getListFromDB,
+	addListFromDB,
+	updateListFromDB,
+	deleteListFromDB,
 };

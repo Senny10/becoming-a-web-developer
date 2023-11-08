@@ -1,4 +1,4 @@
-const { getTodosFromDB, getListsFromDB } = require("./sqllite_todos");
+const { getTodosFromDB, getListsFromDB } = require("./todos-sqlite");
 
 let todos = {
 	default: {
@@ -19,12 +19,12 @@ let todos = {
 	},
 };
 
-function getLists() {
-	return getListsFromDB();
+async function getLists() {
+	return await getListsFromDB();
 }
 
-function getTodos(list = "default") {
-	return getTodosFromDB(list);
+async function getTodos(list = "default") {
+	return await getTodosFromDB(list);
 }
 
 function addTodo(listId, todoRecord) {
