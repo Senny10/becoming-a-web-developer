@@ -140,8 +140,7 @@ app.get("/", (req, res) => {
 });
 app.get("/lists/:listId", async (req, res) => {
 	const { listId } = req.params;
-	let todos = await getTodos(listId);
-
+	const todos = await getTodos(listId);
 	const lists = await getLists();
 	const html = mainTemplate(
 		renderOptions(lists, listId),
