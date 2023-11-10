@@ -1,59 +1,46 @@
-const sqlite3 = require("sqlite3").verbose();
+const sqlite3 = require("sqlite3");
 const { open } = require("sqlite");
 
-let db = new sqlite3.Database("./todos.db", (err) => {
-	if (err) {
-		console.error(err.message);
-	}
-	console.log("Connected to the SQlite database.");
-});
-
-async function getTodosFromDB(list) {
-	const sql = `SELECT task FROM todos JOIN lists ON lists.id = todos.list_id WHERE lists.url_id = ?`;
-
-	await db.all(sql, list, (err, rows) => {
-		let tasks = [];
-		if (err) {
-			throw err;
-		}
-		rows.forEach((row) => tasks.push(row.task));
-		return tasks;
+let db;
+(async () => {
+	db = await open({
+		filename: "./todos.db",
+		driver: sqlite3.Database,
 	});
-}
-async function addTodoFromDB(task) {}
+})();
 
-async function updateTodoFromDB(todo) {}
-
-async function deleteTodoFromDB(id) {}
-
-async function getListsFromDB() {
-	const sql = "SELECT name FROM lists;";
-	await db.all(sql, (err, rows) => {
-		let lists = [];
-		if (err) {
-			throw err;
-		}
-		rows.forEach((row) => lists.push(row.name));
-		return lists;
-	});
+async function getTodos(list = "default") {
+	return db.all(
+		`SELECT * FROM todos JOIN lists ON lists.id = todos.list_id WHERE lists.url_id = '${list}'`
+	);
 }
 
-async function getListFromDB() {}
+async function addTodo(task) {}
 
-async function addListFromDB(list) {}
+async function updateTodo(todo) {}
 
-async function updateListFromDB(list) {}
+async function deleteTodo(id) {}
 
-async function deleteListFromDB(id) {}
+async function getLists() {
+	return await db.all("SELECT url_id as id, name FROM lists");
+}
+
+async function getList() {}
+
+async function addList(list) {}
+
+async function updateList(list) {}
+
+async function deleteList(id) {}
 
 module.exports = {
-	getTodosFromDB,
-	addTodoFromDB,
-	updateTodoFromDB,
-	deleteTodoFromDB,
-	getListsFromDB,
-	getListFromDB,
-	addListFromDB,
-	updateListFromDB,
-	deleteListFromDB,
+	getTodos,
+	addTodo,
+	updateTodo,
+	deleteTodo,
+	getLists,
+	getList,
+	addList,
+	updateList,
+	deleteList,
 };

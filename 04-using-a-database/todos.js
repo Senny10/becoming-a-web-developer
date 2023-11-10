@@ -19,12 +19,20 @@ let todos = {
 	},
 };
 
-async function getLists() {
-	return await getListsFromDB();
+function getLists() {
+	return Object.entries(todos).map(([id, list]) => ({
+		id,
+		name: list.name,
+		count: list.todos.length,
+	}));
 }
 
 async function getTodos(list = "default") {
-	return await getTodosFromDB(list);
+	try {
+		return await getTodosFromDB(list);
+	} catch (error) {
+		console.error("Error:", error);
+	}
 }
 
 function addTodo(listId, todoRecord) {

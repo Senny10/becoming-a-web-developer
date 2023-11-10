@@ -10,7 +10,7 @@ const {
 	updateTodo,
 	deleteTodo,
 	addNewList,
-} = require("./todos");
+} = require("./todos-sqlite");
 
 // * Render Logic
 const mainTemplate = (option, content, listId) => `<!DOCTYPE html>
@@ -105,6 +105,7 @@ const renderOptions = (listOfOptions, listId) => {
 
 const renderTodos = (todos) => {
 	let todosHtml = "";
+
 	todos.forEach((todo) => {
 		todosHtml += renderTodo(todo);
 	});
@@ -140,8 +141,8 @@ app.get("/", (req, res) => {
 app.get("/lists/:listId", async (req, res) => {
 	const { listId } = req.params;
 	let todos = await getTodos(listId);
+
 	const lists = await getLists();
-	console.log("lists from DB ====>", lists);
 	const html = mainTemplate(
 		renderOptions(lists, listId),
 		renderTodos(todos),
@@ -166,11 +167,11 @@ app.post("/lists/:listId/add-todo", (req, res) => {
 	}
 	res.redirect(`/lists/${listId}/`);
 });
-app.post("/lists/:listId/update-todos", (req, res) => {
+app.post("/lists/:listId/update-todos", async (req, res) => {
 	const listId = req.params.listId;
 	const updatedTodos = req.body;
 	let updatedTodo;
-	let todos = getTodos(listId);
+	let todos = await getTodos(listId);
 	todos.forEach((todo) => {
 		console.log(todos);
 		const desiredState = updatedTodos[`complete-${todo.id}`] === "on";
