@@ -1,9 +1,9 @@
 -- For lists creation
 INSERT INTO lists (url_id, name)
 VALUES ('default', 'Default');
-INSERT INTO lists (url_id, name) 
--- For tasks creation
+INSERT INTO lists (url_id, name)
 VALUES ('shopping', 'Shopping List');
+-- For tasks creation
 INSERT INTO todos (list_id, task, complete)
 VALUES(1, 'Learn some HTML', TRUE);
 INSERT INTO todos (list_id, task, complete)

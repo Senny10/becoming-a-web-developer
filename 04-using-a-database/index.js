@@ -149,16 +149,13 @@ app.get("/lists/:listId", async (req, res) => {
 	);
 	res.send(html);
 });
-app.post("/lists/:listId/add-todo", (req, res) => {
+app.post("/lists/:listId/add-todo", async (req, res) => {
 	const listId = req.params.listId;
 	const newListId = req.body.list;
-	const newTask = {
-		task: req.body.task,
-		complete: false,
-	};
+	const newTask = req.body.task;
 
-	if (newTask.task) {
-		addTodo(listId, newTask);
+	if (newTask) {
+		await addTodo(listId, newTask);
 	}
 
 	if (newListId) {

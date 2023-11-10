@@ -15,8 +15,13 @@ async function getTodos(list = "default") {
 	);
 }
 
-async function addTodo(task) {}
+async function addTodo(listId, task) {
+	const { id } = db.get(`SELECT id FROM lists WHERE url_id = ?`, [listId]);
 
+	return db.run(`INSERT INTO todos (list_id, task, complete)
+	VALUES(${id}, ${task}, FALSE)`);
+}
+addTodo("default", "This is a test");
 async function updateTodo(todo) {}
 
 async function deleteTodo(id) {}
