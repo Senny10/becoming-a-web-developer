@@ -16,12 +16,12 @@ async function getTodos(list = "default") {
 }
 
 async function addTodo(listId, task) {
-	const { id } = db.get(`SELECT id FROM lists WHERE url_id = ?`, [listId]);
+	const id = await getList(listId);
 
 	return db.run(`INSERT INTO todos (list_id, task, complete)
 	VALUES(${id}, ${task}, FALSE)`);
 }
-addTodo("default", "This is a test");
+
 async function updateTodo(todo) {}
 
 async function deleteTodo(id) {}
@@ -30,9 +30,11 @@ async function getLists() {
 	return await db.all("SELECT url_id as id, name FROM lists");
 }
 
-async function getList() {}
+async function getList(listId) {
+	return await db.all(`SELECT id FROM lists WHERE url_id = ${listId}`);
+}
 
-async function addList(list) {}
+async function addNewList(list) {}
 
 async function updateList(list) {}
 
@@ -45,7 +47,7 @@ module.exports = {
 	deleteTodo,
 	getLists,
 	getList,
-	addList,
+	addNewList,
 	updateList,
 	deleteList,
 };
