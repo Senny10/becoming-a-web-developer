@@ -15,7 +15,7 @@ async function getList(listId) {
 		if (err) {
 			throw err;
 		}
-		console.log(rows.id);
+		return rows.id;
 	});
 	db.close((err) => {
 		if (err) {
@@ -23,5 +23,5 @@ async function getList(listId) {
 		}
 	});
 }
-getList("default");
+
 module.exports = getList;
