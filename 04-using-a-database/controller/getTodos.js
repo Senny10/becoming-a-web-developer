@@ -12,9 +12,8 @@ async function getTodos(list = "default") {
 			if (err) {
 				throw err;
 			}
-			rows.forEach((row) => {
-				return row
-			});
+			return rows
+
 		});
 
 	db.close((err) => {
@@ -24,6 +23,5 @@ async function getTodos(list = "default") {
 
 	});
 }
-
 
 module.exports = getTodos;
