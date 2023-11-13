@@ -3,14 +3,11 @@ const bodyParser = require("body-parser");
 const app = express();
 const path = require("path");
 const port = process.env.PORT || 8000;
-const {
-	getTodos,
-	getLists,
-	addTodo,
-	updateTodo,
-	deleteTodo,
-	addNewList,
-} = require("./todos-sqlite");
+const addTodo = require("./controller/addTodo");
+const getLists = require("./controller/getLists");
+const getTodos = require("./controller/getTodos");
+const updateTodo = require("./controller/updateTodo");
+const addNewList = require("./controller/addNewList");
 
 // * Render Logic
 const mainTemplate = (option, content, listId) => `<!DOCTYPE html>
