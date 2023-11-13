@@ -4,7 +4,7 @@ const { open } = require("sqlite");
 let db;
 (async () => {
 	db = await open({
-		filename: "./todos.db",
+		filename: "../db/todos.db",
 		driver: sqlite3.Database,
 	});
 })();
