@@ -1,4 +1,4 @@
-const sqlite3 = require("sqlite3");
+const sqlite3 = require("sqlite3").verbose();
 const { open } = require("sqlite");
 
 let db;
@@ -10,7 +10,7 @@ let db;
 })();
 
 async function getList(listId) {
-	return await db.get(`SELECT id FROM lists WHERE url_id = ${listId}`);
+	return await db.get("SELECT id FROM lists WHERE url_id = ?s", [listId]);
 }
-
+console.log(getList("default"));
 module.exports = getList;
