@@ -2,7 +2,7 @@ const sqlite3 = require("sqlite3").verbose();
 
 async function getList(listId) {
 	let db = new sqlite3.Database(
-		"../db/todos.db",
+		"/Users/senaka.saunders/Documents/00_Academy/becoming-a-web-developer/04-using-a-database/controller/todos.db",
 		sqlite3.OPEN_READONLY,
 		(err) => {
 			if (err) {
@@ -23,5 +23,5 @@ async function getList(listId) {
 		}
 	});
 }
-
+getList("default");
 module.exports = getList;
