@@ -1,14 +1,7 @@
-const sqlite3 = require("sqlite3");
-const { open } = require("sqlite");
+const { db } = require('../db-client')
 
-let db;
-(async () => {
-	db = await open({
-		filename: "../db/todos.db",
-		driver: sqlite3.Database,
-	});
-})();
+async function addNewList(list) {
 
-async function addNewList(list) {}
+}
 
 module.exports = addNewList;
