@@ -61,7 +61,7 @@ async function addList(list) {
 		])
 	);
 }
-addList("groceries");
+
 async function updateTodo(task) {
 	const db = await getConnection();
 }
