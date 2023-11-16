@@ -156,11 +156,11 @@ app.post("/lists/:listId/add-todo", async (req, res) => {
 	};
 
 	if (newTask.task) {
-		addTodo(listId, newTask);
+		await addTodo(listId, newTask.task);
 	}
 
 	if (newListId) {
-		addList(newListId);
+		await addList(newListId);
 	}
 	res.redirect(`/lists/${listId}/`);
 });
