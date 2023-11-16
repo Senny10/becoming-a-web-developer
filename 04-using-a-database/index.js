@@ -7,9 +7,9 @@ const {
 	getTodos,
 	getLists,
 	addTodo,
+	addList,
 	updateTodo,
 	deleteTodo,
-	addNewList,
 } = require("./todos-sqlite");
 
 // * Render Logic
@@ -156,11 +156,11 @@ app.post("/lists/:listId/add-todo", async (req, res) => {
 	};
 
 	if (newTask.task) {
-		await addTodo(listId, newTask);
+		addTodo(listId, newTask);
 	}
 
 	if (newListId) {
-		await addNewList(newListId);
+		addList(newListId);
 	}
 	res.redirect(`/lists/${listId}/`);
 });
