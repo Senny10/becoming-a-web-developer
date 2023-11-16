@@ -1,0 +1,148 @@
+:root {
+	--odd-task: #e9b824;
+	--header-bg: #219c90;
+	--even-task: #ee9322;
+	--new-task: #d83f31;
+}
+html {
+	font-family: "M PLUS Code Latin", sans-serif;
+}
+body {
+	padding: 0;
+	margin: 0;
+}
+@media only screen and (min-width: 768px) {
+	body {
+		margin: 0 auto;
+		width: 768px;
+	}
+}
+
+fieldset {
+	background-color: black;
+}
+
+label {
+	padding: 5px;
+	width: 100%;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 10px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+	margin: 0;
+	padding: 0.5rem;
+}
+header h1 {
+	text-align: center;
+	background-color: var(--header-bg);
+}
+ul.task {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+ul.task li {
+	padding: 10px;
+	background-color: var(--odd-task);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+ul.task li button {
+	display: inline-block;
+	outline: none;
+	cursor: pointer;
+	font-size: 14px;
+	line-height: 1;
+	border-radius: 500px;
+	transition-property: background-color, border-color, color, box-shadow,
+		filter;
+	transition-duration: 0.3s;
+	border: 1px solid transparent;
+	letter-spacing: 2px;
+	min-width: 160px;
+	text-transform: uppercase;
+	white-space: normal;
+	font-weight: 700;
+	text-align: center;
+	padding: 12px 10px 14px;
+	color: black;
+	background-color: var(--even-task);
+	height: 48px;
+}
+
+ul.task li button:hover {
+	background-color: var(--header-bg);
+}
+
+ul.task li:nth-child(even) {
+	background-color: var(--even-task);
+	color: black;
+}
+
+ul.task li:nth-child(even) button {
+	background-color: var(--odd-task);
+	color: black;
+	transition: 0.3s;
+}
+
+ul.tasks li:nth-child(even) button:hover {
+	background-color: var(--header-bg);
+	color: black;
+}
+
+ul.newTask,
+ul.listOfLists {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+ul.newTask li,
+ul.listOfLists li {
+	padding: 10px;
+	background-color: var(--new-task);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+ul.newTask li button {
+	display: inline-block;
+	outline: none;
+	cursor: pointer;
+	font-size: 14px;
+	line-height: 1;
+	border-radius: 500px;
+	transition-property: background-color, border-color, color, box-shadow,
+		filter;
+	transition-duration: 0.3s;
+	border: 1px solid transparent;
+	letter-spacing: 2px;
+	min-width: 160px;
+	text-transform: uppercase;
+	white-space: normal;
+	font-weight: 700;
+	text-align: center;
+	padding: 12px 10px 14px;
+	color: black;
+	background-color: var(--header-bg);
+	height: 48px;
+}
+ul.newTask li button:hover {
+	background-color: var(--odd-task);
+}
+
+#new_task,
+#new_list,
+#listOfTasklists {
+	background-color: white;
+	width: 70%;
+	padding: 10px 14px;
+	border-radius: 5px;
+}
