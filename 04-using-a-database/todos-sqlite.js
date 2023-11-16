@@ -45,10 +45,11 @@ async function getList(listId) {
 
 async function addTodo(listId, task) {
 	const id = await getList(listId);
+	const newTask = task.toString();
 	return await getConnection().then((db) =>
 		db.run(
 			"INSERT INTO todos (list_id, task, complete) VALUES (?, ?, FALSE)",
-			[id, task]
+			[id, newTask]
 		)
 	);
 }
