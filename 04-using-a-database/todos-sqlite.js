@@ -18,26 +18,41 @@ async function getConnection() {
 }
 
 async function getTodos(list = "default") {
-	const db = await getConnection();
-	return await db.all(
-		`SELECT * FROM todos JOIN lists ON lists.id = todos.list_id WHERE lists.url_id = ${list};`
+	return await getConnection().then((db) =>
+		db.all(
+			"SELECT * FROM todos JOIN lists ON lists.id = todos.list_id WHERE lists.url_id = ?",
+			[list]
+		)
 	);
 }
 
 async function getLists() {
-	const db = await getConnection();
-	return await db.all(`SELECT url_id as id, name FROM lists;`);
+	return await getConnection().then((db) =>
+		db.all("SELECT url_id as id, name FROM lists")
+	);
 }
 
 async function getList(listId) {
-	const db = await getConnection();
-	return db.get(`SELECT id FROM lists WHERE url_id = ${listId}`);
+	return await getConnection()
+		.then((db) => db.get("SELECT id FROM lists WHERE url_id = ?", [listId]))
+		.then((r) => r.id);
+	// const db = await getConnection();
+	// return await db
+	// 	.get("SELECT id FROM lists WHERE url_id = ?", [listId])
+	// 	.then((r) => r.id);
 }
-console.log(getList("default"));
-async function addTodo(task) {
-	const db = await getConnection();
-}
+// getList("default").then(console.log);
 
+async function addTodo(listId, task) {
+	const id = await getList(listId);
+	return await getConnection().then((db) =>
+		db.run(
+			"INSERT INTO todos (list_id, task, complete) VALUES (?, ?, FALSE)",
+			[id, task]
+		)
+	);
+}
+addTodo("default", "This is a test");
 async function addList(list) {
 	const db = await getConnection();
 }
@@ -69,3 +84,29 @@ module.exports = {
 	updateList,
 	deleteList,
 };
+
+// const API_URL = 'https://example.com/file.json';
+// ​
+// async function namedAsyncFetcher() {
+//     const response = await fetch(API_URL);
+//     return await response.json();
+// }
+// ​
+// const anonymousAsyncFetcher = async () => {
+//     const response = await fetch(API_URL);
+//     return await response.json();
+// };
+// ​
+// const anonymousFetcher = () =>
+//     new Promise(resolve => {
+//         fetch(API_URL)
+//             .then(r => r.json())
+//             .then(d => resolve(d));
+//     });
+// ​
+// const fetcher = () => fetch(API_URL).then(r => r.json());
+// console.log(await fetcher());
+// ​
+// const willFetch = fetch(API_URL).then(r => r.json());
+// ​
+// console.log(await willFetch);
