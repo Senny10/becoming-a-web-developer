@@ -60,7 +60,8 @@ function deleteTodo(listId, taskId) {
 }
 
 function addNewList(listId) {
-	const newList = { listId: { name: listId.toUpperCase(), todos: [] } };
+	const newList = { listId: { name: listId.charAt(0).toUpperCase()
+		+ listId.slice(1), todos: [] } };
 	todos = { ...todos, ...newList };
 }
 

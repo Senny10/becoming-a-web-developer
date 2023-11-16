@@ -52,11 +52,16 @@ async function addTodo(listId, task) {
 		)
 	);
 }
-addTodo("default", "This is a test");
-async function addList(list) {
-	const db = await getConnection();
-}
 
+async function addList(list) {
+	return await getConnection().then((db) =>
+		db.run("INSERT INTO lists (url_id, name) VALUES (?, ?)", [
+			list,
+			list.charAt(0).toUpperCase() + list.slice(1),
+		])
+	);
+}
+addList("groceries");
 async function updateTodo(task) {
 	const db = await getConnection();
 }

@@ -10,7 +10,7 @@ const {
 	updateTodo,
 	deleteTodo,
 	addNewList,
-} = require("./todos");
+} = require("./todos-sqlite");
 
 // * Render Logic
 const mainTemplate = (option, content, listId) => `<!DOCTYPE html>
@@ -136,10 +136,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
 	res.redirect(`/lists/default/`);
 });
-app.get("/lists/:listId", (req, res) => {
+app.get("/lists/:listId", async (req, res) => {
 	const { listId } = req.params;
-	let todos = getTodos(listId);
-	const lists = getLists();
+	let todos = await getTodos(listId);
+	const lists = await getLists();
 	const html = mainTemplate(
 		renderOptions(lists, listId),
 		renderTodos(todos),
@@ -147,7 +147,7 @@ app.get("/lists/:listId", (req, res) => {
 	);
 	res.send(html);
 });
-app.post("/lists/:listId/add-todo", (req, res) => {
+app.post("/lists/:listId/add-todo", async (req, res) => {
 	const listId = req.params.listId;
 	const newListId = req.body.list;
 	const newTask = {
@@ -156,22 +156,20 @@ app.post("/lists/:listId/add-todo", (req, res) => {
 	};
 
 	if (newTask.task) {
-		addTodo(listId, newTask);
+		await addTodo(listId, newTask);
 	}
 
 	if (newListId) {
-		
-		addNewList(newListId);
+		await addNewList(newListId);
 	}
 	res.redirect(`/lists/${listId}/`);
 });
-app.post("/lists/:listId/update-todos", (req, res) => {
+app.post("/lists/:listId/update-todos", async (req, res) => {
 	const listId = req.params.listId;
 	const updatedTodos = req.body;
 	let updatedTodo;
-	let todos = getTodos(listId);
-	todos.forEach((todo) => {
-		console.log(todos)
+	let todos = await getTodos(listId);
+	todos.forEach(async (todo) => {
 		const desiredState = updatedTodos[`complete-${todo.id}`] === "on";
 		const actualState = todo.complete;
 		const deleted = updatedTodos["deleted"] === `task-${todo.id}`;
