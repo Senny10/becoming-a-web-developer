@@ -63,21 +63,28 @@ async function addList(list) {
 	);
 }
 
-async function updateTodo(task) {
-	const db = await getConnection();
+async function updateTodo(row) {
+	const sql = "UPDATE todos SET complete = ? WHERE id = ?";
+	return await getConnection()
+		.then((db) => db.run(sql, [row.complete, row.id]))
+		.catch((err) => console.error(err));
 }
 
-async function updateList(list) {
-	const db = await getConnection();
-}
+// async function updateList(list) {
+// 	const db = await getConnection();
+// }
 
 async function deleteTodo(id) {
-	const db = await getConnection();
+	const sql = "DELETE FROM todos WHERE id = ?";
+	return await getConnection()
+		.then((db) => db.run(sql, [id]))
+		.catch((err) => console.error(err));
 }
 
-async function deleteList(id) {
-	const db = await getConnection();
-}
+// async function deleteList(id) {
+// 	const sql = "DELETE FROM lists WHERE ?";
+// 	const db = await getConnection();
+// }
 
 module.exports = {
 	getTodos,
@@ -87,8 +94,6 @@ module.exports = {
 	getLists,
 	getList,
 	addList,
-	updateList,
-	deleteList,
 };
 
 // const API_URL = 'https://example.com/file.json';

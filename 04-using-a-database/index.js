@@ -166,22 +166,22 @@ app.post("/lists/:listId/add-todo", async (req, res) => {
 });
 app.post("/lists/:listId/update-todos", async (req, res) => {
 	const listId = req.params.listId;
-	const updatedTodos = req.body;
+	const currentTodos = req.body;
 	let updatedTodo;
 	let todos = await getTodos(listId);
 	todos.forEach(async (todo) => {
-		const desiredState = updatedTodos[`complete-${todo.id}`] === "on";
+		const desiredState = currentTodos[`complete-${todo.id}`] === "on";
 		const actualState = todo.complete;
-		const deleted = updatedTodos["deleted"] === `task-${todo.id}`;
+		const deleted = currentTodos["deleted"] === `task-${todo.id}`;
 		if (desiredState !== actualState) {
 			updatedTodo = {
 				...todo,
 				complete: desiredState,
 			};
-			updateTodo(listId, updatedTodo);
+			await updateTodo(updatedTodo);
 		}
 		if (deleted) {
-			deleteTodo(listId, todo.id);
+			await deleteTodo(todo.id);
 		}
 	});
 
