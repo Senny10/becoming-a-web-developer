@@ -8,7 +8,7 @@ const {
 	getLists,
 	addTodo,
 	addList,
-	updateTodo,
+	updateTodoState,
 	deleteTodo,
 } = require("./todos-sqlite");
 
@@ -138,7 +138,7 @@ app.get("/", (req, res) => {
 });
 app.get("/lists/:listId", async (req, res) => {
 	const { listId } = req.params;
-	let todos = await getTodos(listId);
+	const todos = await getTodos(listId);
 	const lists = await getLists();
 	const html = mainTemplate(
 		renderOptions(lists, listId),
@@ -166,24 +166,28 @@ app.post("/lists/:listId/add-todo", async (req, res) => {
 });
 app.post("/lists/:listId/update-todos", async (req, res) => {
 	const listId = req.params.listId;
-	const currentTodos = req.body;
-	let updatedTodo;
-	let todos = await getTodos(listId);
-	todos.forEach(async (todo) => {
-		const desiredState = currentTodos[`complete-${todo.id}`] === "on";
-		const actualState = todo.complete;
-		const deleted = currentTodos["deleted"] === `task-${todo.id}`;
-		if (desiredState !== actualState) {
-			updatedTodo = {
-				...todo,
-				complete: desiredState,
-			};
-			await updateTodo(updatedTodo);
+	const formData = req.body; // { 'complete-1': 'on' }
+
+	const updatedFormData = async (formDataKey) => {
+		const shouldBeCompleted = formData[formDataKey] === "on";
+		const deleted = formData["deleted"];
+
+		if (shouldBeCompleted) {
+			const todoId = formDataKey.split("-")[1];
+			await updateTodoState(todoId, true);
 		}
-		if (deleted) {
-			await deleteTodo(todo.id);
+		if (deleted === formData["deleted"]) {
+			const todoId = formData["deleted"].split("-")[1];
+			await deleteTodo(todoId);
 		}
-	});
+	};
+
+	const FormDataPromises = [];
+	for (key of Object.keys(formData)) {
+		FormDataPromises.push(updatedFormData(key));
+	}
+
+	await Promise.all(FormDataPromises);
 
 	res.redirect(`/lists/${listId}/`);
 });
