@@ -18,24 +18,27 @@ async function getConnection() {
 }
 
 async function getTodos(list = "default") {
-	return await getConnection().then((db) =>
-		db.all(
-			"SELECT * FROM todos JOIN lists ON lists.id = todos.list_id WHERE lists.url_id = ?",
-			[list]
+	return await getConnection()
+		.then((db) =>
+			db.all(
+				"SELECT todos.* FROM todos JOIN lists ON lists.id = todos.list_id WHERE lists.url_id = ?",
+				[list]
+			)
 		)
-	);
+		.catch((err) => console.error(err));
 }
 
 async function getLists() {
-	return await getConnection().then((db) =>
-		db.all("SELECT url_id as id, name FROM lists")
-	);
+	return await getConnection()
+		.then((db) => db.all("SELECT url_id as id, name FROM lists"))
+		.catch((err) => console.error(err));
 }
 
 async function getList(listId) {
 	return await getConnection()
 		.then((db) => db.get("SELECT id FROM lists WHERE url_id = ?", [listId]))
-		.then((r) => r.id);
+		.then((r) => r.id)
+		.catch((err) => console.error(err));
 	// const db = await getConnection();
 	// return await db
 	// 	.get("SELECT id FROM lists WHERE url_id = ?", [listId])
@@ -46,27 +49,31 @@ async function getList(listId) {
 async function addTodo(listId, task) {
 	const id = await getList(listId);
 	const newTask = task.toString();
-	return await getConnection().then((db) =>
-		db.run(
-			"INSERT INTO todos (list_id, task, complete) VALUES (?, ?, FALSE)",
-			[id, newTask]
+	return await getConnection()
+		.then((db) =>
+			db.run(
+				"INSERT INTO todos (list_id, task, complete) VALUES (?, ?, FALSE)",
+				[id, newTask]
+			)
 		)
-	);
+		.catch((err) => console.error(err));
 }
 
 async function addList(list) {
-	return await getConnection().then((db) =>
-		db.run("INSERT INTO lists (url_id, name) VALUES (?, ?)", [
-			list,
-			list.charAt(0).toUpperCase() + list.slice(1),
-		])
-	);
+	return await getConnection()
+		.then((db) =>
+			db.run("INSERT INTO lists (url_id, name) VALUES (?, ?)", [
+				list,
+				list.charAt(0).toUpperCase() + list.slice(1),
+			])
+		)
+		.catch((err) => console.error(err));
 }
 
-async function updateTodo(row) {
+async function updateTodoState(todoId, isComplete) {
 	const sql = "UPDATE todos SET complete = ? WHERE id = ?";
 	return await getConnection()
-		.then((db) => db.run(sql, [row.complete, row.id]))
+		.then((db) => db.run(sql, [isComplete, todoId]))
 		.catch((err) => console.error(err));
 }
 
@@ -89,7 +96,7 @@ async function deleteTodo(id) {
 module.exports = {
 	getTodos,
 	addTodo,
-	updateTodo,
+	updateTodoState,
 	deleteTodo,
 	getLists,
 	getList,
