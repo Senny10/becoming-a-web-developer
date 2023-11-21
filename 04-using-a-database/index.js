@@ -182,12 +182,11 @@ app.post("/lists/:listId/update-todos", async (req, res) => {
 		}
 	};
 
-	const FormDataPromises = [];
-	for (key of Object.keys(formData)) {
-		FormDataPromises.push(updatedFormData(key));
-	}
+	const formDataPromises = Object.keys(formData).map((key) =>
+		updatedFormData(key)
+	);
 
-	await Promise.all(FormDataPromises);
+	await Promise.all(formDataPromises);
 
 	res.redirect(`/lists/${listId}/`);
 });
