@@ -7,7 +7,7 @@ async function getConnection() {
 
 	try {
 		_db = await open({
-			filename: "./todos.db",
+			filename: "../todos.db",
 			driver: sqlite3.Database,
 		});
 	} catch (e) {
