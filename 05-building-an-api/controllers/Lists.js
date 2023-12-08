@@ -39,4 +39,13 @@ async function updateList(req, res, urlId, id) {
 		);
 	});
 }
-module.exports = { getLists, getListByUrlId, createList, updateList };
+
+async function deleteList(req, res, id) {
+	return await getConnection().then(async (db) => {
+		db.run("DELETE FROM lists WHERE id = ?", [id]).catch((err) => {
+			console.log(err);
+			res.status(500).json({ error: err });
+		});
+	});
+}
+module.exports = { getLists, getListByUrlId, createList, updateList, deleteList };
