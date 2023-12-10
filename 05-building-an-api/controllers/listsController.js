@@ -8,20 +8,20 @@ async function getLists(req, res) {
 		});
 	});
 }
-async function getListByUrlId(req, res, urlId) {
+async function getListByUrlId(req, res) {
 	return await getConnection().then(async (db) => {
-		db.get("SELECT * FROM lists WHERE id = ?", [urlId]).catch((err) => {
+		db.get("SELECT * FROM lists WHERE id = ?", [req.params.listId]).catch((err) => {
 			console.log(err);
 			res.status(500).json({ error: err });
 		});
 	});
 }
 
-async function createList(req, res, urlId) {
+async function createList(req, res) {
 	return await getConnection().then(async (db) => {
 		db.run("INSERT INTO lists (url_id, name) VALUES (?, ?)", [
-			urlId,
-			urlId.charAt(0).toUpperCase() + list.slice(1),
+			req.params.listId,
+			req.params.listId.charAt(0).toUpperCase() + req.params.listId.slice(1),
 		]).catch((err) => {
 			console.log(err);
 			res.status(500).json({ error: err });
@@ -29,7 +29,7 @@ async function createList(req, res, urlId) {
 	});
 }
 
-async function updateList(req, res, urlId, id) {
+async function updateList(req, res) {
 	return await getConnection().then(async (db) => {
 		db.run("UPDATE lists SET name = ? WHERE id = ?", [urlId, id]).catch(
 			(err) => {
