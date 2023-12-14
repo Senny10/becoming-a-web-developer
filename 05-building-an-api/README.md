@@ -10,6 +10,14 @@ We're going to continue working in the app folder on your existing web applicati
 
 ### Part One - Designing the API
 
+Design 4 Frontend Pages
+**thin vertical slice approach** applies to all levels of the stack.
+
+- view of all lists, create list, update list
+- view of individual list, creat new tasks
+- view of user registration and user login, profile page to update user information.
+- view of 404 page
+
 We have two data models we're going to build our API around; `list`s and `todo`s. These have a hierarchical relationship in that `todo`s belong to `list`s. This can be represented in a URL like: `/lists/:listId/todos/:todoId`.
 
 ReSTful APIs generally model operations in the common `CRUD` pattern (`CREATE`, `READ`, `UPDATE`, `DELETE`). We will map HTTP "verbs" or "actions" on to these to achieve what we want to with our API. The standard mapping for this is:
@@ -76,7 +84,6 @@ Server Error:
 
 There are many more HTTP status codes but these are the ones you would normally use in your application code. [`http status codes`]
 
-
 #### The API Endpoints
 
 To follow the ReSTful standard, we should use the following routes to create our API. Also, so we can differentiate between the API endpoints and our regular endpoints, I've added `/api/` at the beginning of the API.
@@ -135,7 +142,7 @@ Continue your build to add an endpoint for creating new lists:
 
 - [ ] Add a `POST` endpoint to your `index.js` file for `/api/lists`
 - [ ] Add middleware to express to parse the JSON body you are sending [`express bodyparser json`]
-- [ ] Use the data sent in the JSON to create a new list. You'll need to use the functions you created in the `todos-sqlite.js` file from earlier. 
+- [ ] Use the data sent in the JSON to create a new list. You'll need to use the functions you created in the `todos-sqlite.js` file from earlier.
 - [ ] You should have just created a new list, you can either return a `Created` status code or redirect to the URL of the new object. The benefit of the redirect is that the client is told where the new resource is.
 - [ ] Add error handling to make sure the JSON you received was valid and has the required fields
 - [ ] Add more error handling - if the user tries to create a list with a duplicate `url_id` you should handle this properly and return an error status code as well as an error message JSON object so the user knows why the request failed. Note, an alternative to letting the user provide the `url_id` is to try to turn the name of the list into the `url_id` yourself and then add a number to the end if it already exists.
