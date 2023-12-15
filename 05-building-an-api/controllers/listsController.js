@@ -7,19 +7,11 @@ const getConnection = require("../config/db");
 function getLists(req, res) {
 	getConnection()
 		.then((db) => {
-			db.all("SELECT * FROM lists")
-				.then(lists => {
-					res.json({
-						lists,
-						meta: {
-							pagination: {
-								current: 0,
-								total: 32,
-								perPage: 10,
-							},
-						},
-					});
+			db.all("SELECT * FROM lists").then((lists) => {
+				res.json({
+					lists,
 				});
+			});
 		})
 		.catch((err) => {
 			console.error(err);
@@ -30,14 +22,16 @@ function getLists(req, res) {
 function createList(req, res) {
 	getConnection()
 		.then((db) => {
-			const list = req.body
+			const list = req.body;
 
-			db.run("INSERT INTO lists (url_id, name, user_id) VALUES (?, ?, ?)", [
-				list.listId,
-				list.listId.charAt(0).toUpperCase() + list.listId.slice(1),
-				1,
-			])
-			.then(() => {
+			db.run(
+				"INSERT INTO lists (url_id, name, user_id) VALUES (?, ?, ?)",
+				[
+					list.listId,
+					list.listId.charAt(0).toUpperCase() + list.listId.slice(1),
+					1,
+				]
+			).then(() => {
 				res.status(201).json({
 					meta: {
 						links: {
@@ -45,8 +39,8 @@ function createList(req, res) {
 							delete: `DELETE /api/lists/${list.listId}`,
 						},
 					},
-				})
-			})
+				});
+			});
 		})
 		.catch((err) => {
 			console.log(err);
