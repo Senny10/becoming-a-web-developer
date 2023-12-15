@@ -1,9 +1,58 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Tasking Myself</title>
-</head>
-<body>
-    <h1>Start here...</h1>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="../public/styles.css" />
+		<title>Senny's Todo App</title>
+	</head>
+	<body>
+		<section class="landing">
+			<h1>Start here...</h1>
+		</section>
+		<section class="user">
+			<h1>User Sign In</h1>
+			<form>
+				<label for="email">Email:</label>
+				<input
+					type="email"
+					id="email"
+					name="email"
+					required
+				/><br /><br />
+				<label for="password">Password:</label>
+				<input
+					type="password"
+					id="password"
+					name="password"
+					required
+				/><br /><br />
+				<input type="submit" value="Sign In" />
+			</form>
+
+			<h1>User Register</h1>
+			<form>
+				<label for="name">Name:</label>
+				<input type="text" id="name" name="name" required /><br /><br />
+				<label for="email">Email:</label>
+				<input
+					type="email"
+					id="email-unique"
+					name="email"
+					required
+				/><br /><br />
+				<label for="password">Password:</label>
+				<input
+					type="password"
+					id="password-unique"
+					name="password"
+					required
+				/><br /><br />
+				<input type="submit" value="Register" />
+			</form>
+		</section>
+		<section class="todos">
+			<h1>Senny's Todo App</h1>
+		</section>
+	</body>
 </html>
