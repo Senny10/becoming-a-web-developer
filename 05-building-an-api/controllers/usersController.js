@@ -1,24 +1,20 @@
 const getConnection = require("../config/db");
 const md5 = require("md5");
 
-
-async function getUsers(req, res) {
-	return await getConnection().then(async (db) => {
-		db.all("SELECT username FROM users").catch((err) => {
-			console.log(err);
+function getUserById(req, res) {
+	getConnection()
+		.then((db) => {
+			db.get("SELECT username FROM users WHERE id = ?", [id]).then((user) => {
+				res.json({
+					user,
+				});
+			}
+			);
+		})
+		.catch((err) => {
+			console.error(err);
 			res.status(500).json({ error: err });
 		});
-	});
-}
-
-
-async function getUserById(req, res, id) {
-	return await getConnection().then(async (db) => {
-		db.get("SELECT username FROM users WHERE id = ?", [id]).catch((err) => {
-			console.log(err);
-			res.status(500).json({ error: err });
-		});
-	});
 }
 
 async function createUser(req, res, username, password) {
@@ -58,12 +54,12 @@ async function updateUserPasswordById(req, res, id, password) {
 }
 
 async function deleteUserById(req, res, id) {
-    return await getConnection().then(async (db) => {
-        db.run("DELETE FROM users WHERE id = ?", [id]).catch((err) => {
-            console.log(err);
-            res.status(500).json({ error: err });
-        });
-    });
+	return await getConnection().then(async (db) => {
+		db.run("DELETE FROM users WHERE id = ?", [id]).catch((err) => {
+			console.log(err);
+			res.status(500).json({ error: err });
+		});
+	});
 }
 module.exports = {
 	getUsers,
@@ -71,5 +67,5 @@ module.exports = {
 	createUser,
 	updateUserById,
 	updateUserPasswordById,
-    deleteUserById
+	deleteUserById,
 };
