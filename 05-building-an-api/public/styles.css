@@ -229,3 +229,41 @@ body.notfound p {
 	text-align: center;
 	font-weight: 100;
 }
+
+section.landing {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #7f8a95;
+	color: #fff;
+	height: 100vh;
+	font-size: 100%;
+	line-height: 1.5;
+	font-family: "Roboto", sans-serif;
+}
+section.user {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	justify-content: center;
+	align-items: center;
+	background-color: #0063cf;
+	color: #fff;
+	font-size: 100%;
+	line-height: 1.5;
+	font-family: "Roboto", sans-serif;
+}
+
+section.todos {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background-color: #7f8a95;
+	color: #fff;
+	font-size: 100%;
+	line-height: 1.5;
+	font-family: "Roboto", sans-serif;
+}
