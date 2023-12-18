@@ -126,6 +126,7 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+/* 404 Sections*/
 body.notfound {
 	display: flex;
 	flex-direction: column;
@@ -137,6 +138,7 @@ body.notfound {
 	line-height: 1.5;
 	font-family: "Roboto", sans-serif;
 }
+
 a.notfound {
 	font-weight: 300;
 	color: #fff;
@@ -232,6 +234,18 @@ body.notfound p {
 	text-align: center;
 	font-weight: 100;
 }
+/* Landing Sections*/
+body.landing {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #7f8a95;
+	color: #fff;
+	font-size: 100%;
+	line-height: 1.5;
+	font-family: "Roboto", sans-serif;
+}
 
 section.landing {
 	display: flex;
@@ -245,7 +259,9 @@ section.landing {
 	line-height: 1.5;
 	font-family: "Roboto", sans-serif;
 }
-section.user {
+
+/* User Sections*/
+body.user {
 	display: flex;
 	flex-direction: column;
 	height: 100vh;
@@ -258,7 +274,8 @@ section.user {
 	font-family: "Roboto", sans-serif;
 }
 
-section.todos {
+/* Task Sections*/
+body.todos {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
