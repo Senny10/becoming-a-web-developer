@@ -9,9 +9,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+app.use("/", express.static(path.join(__dirname, "/public")));
 
-app.use('/', require('./routes/root'));
+app.use("/", require("./routes/root"));
+app.use(listRoutes);
 app.all("*", (req, res) => {
 	res.status(404);
 	if (req.accepts("html")) {
@@ -23,7 +24,7 @@ app.all("*", (req, res) => {
 	}
 });
 
-app.use(listRoutes);
+
 // local loopback address added to listen method
 app.listen(PORT, "127.0.0.1", () => {
 	console.log(`Server listening on port ${PORT}`);
