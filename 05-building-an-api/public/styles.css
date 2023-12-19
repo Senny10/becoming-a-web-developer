@@ -194,7 +194,7 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-/* 404 Sections*/
+/* 404 Page*/
 body.notfound {
 	display: flex;
 	flex-direction: column;
@@ -237,36 +237,56 @@ body.notfound p {
 	text-align: center;
 	font-weight: 100;
 }
-/* Landing Sections*/
-body.landing {
+/* Landing Page*/
+section.underlay {
 	display: grid;
 	justify-content: center;
 	align-content: center;
 	background-color: #7f8a95;
-	color: #fff;
-	font-size: 100%;
-	line-height: 1.5;
-	font-family: "Roboto", sans-serif;
+	height: 100vh;
 }
-img.sofa {
-	width: 100%;
-	height: auto;
-}
-
-section.landing {
+.content {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: center;
-	background-color: #107eec;
+	justify-content: space-around;
+}
+div.content h2 {
+	text-align: center;
+	font-size: 15em;
+	font-weight: 100;
+	text-shadow: var(--textshadow);
+}
+div.content a {
+	padding-top: 30px;
 	color: #fff;
-	height: 100vh;
-	font-size: 100%;
-	line-height: 1.5;
+	font-size: 2em;
+	text-decoration: none;
 	font-family: "Roboto", sans-serif;
 }
+div.content a {
+	background: linear-gradient(
+			to right,
+			rgba(100, 200, 200, 1),
+			rgba(100, 200, 200, 1)
+		),
+		linear-gradient(
+			to right,
+			rgba(255, 0, 0, 1),
+			rgba(255, 0, 180, 1),
+			rgba(0, 100, 200, 1)
+		);
+	background-size: 100% 3px, 0 3px;
+	background-position: 100% 100%, 0 100%;
+	background-repeat: no-repeat;
+	transition: background-size 400ms;
+}
 
-/* User Sections*/
+div.content a:hover {
+	background-size: 0 3px, 100% 3px;
+}
+
+/* User Page*/
 body.user {
 	display: flex;
 	flex-direction: column;
@@ -280,7 +300,7 @@ body.user {
 	font-family: "Roboto", sans-serif;
 }
 
-/* Task Sections*/
+/* Task Page*/
 body.todos {
 	display: flex;
 	flex-direction: column;
