@@ -4,11 +4,10 @@ const getConnection = require("./config/db");
 
 (async () => {
 	getConnection().then(async (db) => {
-		// Delete the existing todos.db file
 		await db.run("DROP TABLE IF EXISTS todos");
 		await db.run("DROP TABLE IF EXISTS lists");
 		await db.run("DROP TABLE IF EXISTS users");
-		// Create a new todos.db file and run migrations
+
 		await db.exec(`
         CREATE TABLE lists (
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -31,8 +30,7 @@ const getConnection = require("./config/db");
         );
         CREATE UNIQUE INDEX uidx_username ON users (username);
         CREATE UNIQUE INDEX uidx_lid ON lists (url_id); `);
-		// Insert many records into database
-		// await db.run("INSERT")
+
 		await db.exec(`
         INSERT INTO lists (url_id, name, user_id)
         VALUES ('default', 'Default', 'admin');
@@ -60,6 +58,6 @@ const getConnection = require("./config/db");
 	});
 })()
 	.then(() => {
-		console.log("DONE!");
+		console.log("Dummy data inserted successfully");
 	})
 	.catch(console.error);
