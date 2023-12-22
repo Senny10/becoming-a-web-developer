@@ -7,47 +7,137 @@
 		<title>Senny's Todo App</title>
 	</head>
 	<body class="user">
-		<fieldset>
-			<h1>User Sign In</h1>
-			<form>
-				<label for="email">Email:</label>
-				<input
-					type="email"
-					id="email"
-					name="email"
-					required
-				/><br /><br />
-				<label for="password">Password:</label>
-				<input
-					type="password"
-					id="password"
-					name="password"
-					required
-				/><br /><br />
-				<input type="submit" value="Sign In" />
-			</form>
-		</fieldset>
-		<fieldset>
-			<h1>User Register</h1>
-			<form>
-				<label for="name">Name:</label>
-				<input type="text" id="name" name="name" required /><br /><br />
-				<label for="email">Email:</label>
-				<input
-					type="email"
-					id="email-unique"
-					name="email"
-					required
-				/><br /><br />
-				<label for="password">Password:</label>
-				<input
-					type="password"
-					id="password-unique"
-					name="password"
-					required
-				/><br /><br />
-				<input type="submit" value="Register" />
-			</form>
-		</fieldset>
+		<section class="user">
+			<div class="user_options-container">
+				<div class="user_options-text">
+					<div class="user_options-unregistered">
+						<h2 class="user_unregistered-title">
+							Don't have an account?
+						</h2>
+						<p class="user_unregistered-text">
+							"Genius is 1% inspiration and 99% taking really good
+							notes." - Thomas Edison
+						</p>
+						<button
+							class="user_unregistered-signup"
+							id="signup-button"
+						>
+							Sign up
+						</button>
+					</div>
+
+					<div class="user_options-registered">
+						<h2 class="user_registered-title">Have an account?</h2>
+						<p class="user_registered-text">
+							“You may not control all the events that happen to
+							you, but you can decide not to be reduced by them.”
+							- Maya Angelou
+						</p>
+						<button class="user_registered-login" id="login-button">
+							Login
+						</button>
+					</div>
+				</div>
+
+				<div class="user_options-forms" id="user_options-forms">
+					<div class="user_forms-login">
+						<h2 class="forms_title">Login</h2>
+						<form class="forms_form">
+							<fieldset class="forms_fieldset">
+								<div class="forms_field">
+									<input
+										type="email"
+										placeholder="Email"
+										class="forms_field-input"
+										required
+										autofocus
+									/>
+								</div>
+								<div class="forms_field">
+									<input
+										type="password"
+										placeholder="Password"
+										class="forms_field-input"
+										required
+									/>
+								</div>
+							</fieldset>
+							<div class="forms_buttons">
+								<button
+									type="button"
+									class="forms_buttons-forgot"
+								>
+									Forgot password?
+								</button>
+								<input
+									type="submit"
+									value="Log In"
+									class="forms_buttons-action"
+								/>
+							</div>
+						</form>
+					</div>
+					<div class="user_forms-signup">
+						<h2 class="forms_title">Sign Up</h2>
+						<form class="forms_form">
+							<fieldset class="forms_fieldset">
+								<div class="forms_field">
+									<input
+										type="text"
+										placeholder="Full Name"
+										class="forms_field-input"
+										required
+									/>
+								</div>
+								<div class="forms_field">
+									<input
+										type="email"
+										placeholder="Email"
+										class="forms_field-input"
+										required
+									/>
+								</div>
+								<div class="forms_field">
+									<input
+										type="password"
+										placeholder="Password"
+										class="forms_field-input"
+										required
+									/>
+								</div>
+							</fieldset>
+							<div class="forms_buttons">
+								<input
+									type="submit"
+									value="Sign up"
+									class="forms_buttons-action"
+								/>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
 	</body>
+	<script>
+		const signupButton = document.getElementById("signup-button"),
+			loginButton = document.getElementById("login-button"),
+			userForms = document.getElementById("user_options-forms");
+		signupButton.addEventListener(
+			"click",
+			() => {
+				userForms.classList.remove("bounceRight");
+				userForms.classList.add("bounceLeft");
+			},
+			false
+		);
+		loginButton.addEventListener(
+			"click",
+			() => {
+				userForms.classList.remove("bounceLeft");
+				userForms.classList.add("bounceRight");
+			},
+			false
+		);
+	</script>
 </html>
