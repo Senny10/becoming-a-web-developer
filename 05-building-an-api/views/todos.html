@@ -11,7 +11,128 @@
 			<h1>Lists</h1>
 		</section>
 		<section class="todos">
-			<h1>Senny's Todo App</h1>
+			
+			<div id="container">
+				<h1>Things to Do</h1>
+				<div class="counter"></div>
+				<ul>
+					<li>
+						<label
+							><input type="checkbox" /><span
+								class="check"
+							></span></label
+						>Book a business class flight to London<span
+							class="close"
+						></span>
+					</li>
+					<li>
+						<label
+							><input type="checkbox" /><span
+								class="check"
+							></span></label
+						>Submit annual financial report to Manager<span
+							class="close"
+						></span>
+					</li>
+					<li>
+						<label
+							><input type="checkbox" /><span
+								class="check"
+							></span></label
+						>Organise catering for Wednesday's event<span
+							class="close"
+						></span>
+					</li>
+					<li>
+						<label
+							><input type="checkbox" /><span
+								class="check"
+							></span></label
+						>Purchase new ink cartridges for printer<span
+							class="close"
+						></span>
+					</li>
+					<li>
+						<label
+							><input type="checkbox" /><span
+								class="check"
+							></span></label
+						>Pick up car from the auto repair shop<span
+							class="close"
+						></span>
+					</li>
+				</ul>
+				<form>
+					<div class="form_group">
+						<input
+							id="newItem"
+							type="text"
+							placeholder="Add a new task"
+						/>
+						<button type="submit"><span>Add</span></button>
+						<div class="error"></div>
+					</div>
+				</form>
+			</div>
 		</section>
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+		<script>
+			$(function () {
+				var list = $("ul");
+				var newInput = $("form");
+				var error = $(".error");
+
+				error.hide();
+
+				$("input:checkbox").attr("checked", false);
+
+				function updateCounter() {
+					var records = $("li").length;
+					$(".counter").text(records);
+				}
+
+				updateCounter();
+
+				newInput.on("submit", function (e) {
+					e.preventDefault();
+					var text = $("input:text").val();
+					error.text(
+						"Oops! it seems you have attempted to enter a blank task."
+					);
+
+					if ($("input:text").val().trim().length < 1) {
+						error.stop(true).fadeIn("normal", function () {
+							setTimeout(function () {
+								error.stop(true).fadeOut("normal");
+							}, 3000);
+						});
+					} else {
+						error.hide();
+						list.append(
+							'<li><label><input type="checkbox"><span class="check"></span></label>' +
+								text +
+								'<span class="close"></span></li>'
+						);
+						$("input:text").val("");
+						updateCounter();
+					}
+				});
+
+				list.on("change", "label", function () {
+					$(this).parent("li").toggleClass("complete");
+				});
+
+				list.on("click", ".close", function () {
+					$(this)
+						.parent("li")
+						.addClass("fold")
+						.slideUp(600, function () {
+							$(this).remove();
+							updateCounter();
+						});
+				});
+			});
+		</script>
 	</body>
 </html>
