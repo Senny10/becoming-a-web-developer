@@ -1,5 +1,6 @@
 const getConnection = require("../config/db");
 const md5 = require("md5");
+const getUserId = require("../middleware/getUserId");
 
 async function userLogin(req, res) {
 	const { username, password } = req.body;
@@ -41,8 +42,8 @@ async function createUser(req, res) {
 }
 
 async function updateUserById(req, res) {
-	const id = getUserById(); // update this to get id from the username
 	const { username } = req.body;
+	const id = getUserId(username);
 	return await getConnection().then(async (db) => {
 		db.run("UPDATE users SET username = ? WHERE id = ?", [
 			username,
@@ -55,8 +56,8 @@ async function updateUserById(req, res) {
 }
 
 async function updateUserPasswordById(req, res) {
-	const id = getUserById(); // update this to get id from the username
-	const { password } = req.body;
+	const { username, password } = req.body;
+	const id = getUserId(username);
 	return await getConnection().then(async (db) => {
 		db.run("UPDATE users SET password = ? WHERE id = ?", [
 			md5(password),
@@ -69,8 +70,8 @@ async function updateUserPasswordById(req, res) {
 }
 
 async function deleteUserById(req, res, id) {
-	const id = getUserById(); // update this to get id from the username
-
+	const { username } = req.body;
+	const id = getUserId(username);
 	return await getConnection().then(async (db) => {
 		db.run("DELETE FROM users WHERE id = ?", [id]).catch((err) => {
 			console.log(err);
