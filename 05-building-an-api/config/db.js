@@ -1,6 +1,6 @@
 const sqlite3 = require("sqlite3");
 const { open } = require("sqlite");
-const path = require("path");
+// const path = require("path");
 
 let _db;
 async function getConnection() {
@@ -8,7 +8,7 @@ async function getConnection() {
 
 	try {
 		_db = await open({
-			filename: path.join(process.cwd(), "todos.db"),
+			filename: "../todos.db",
 			driver: sqlite3.Database,
 		});
 	} catch (e) {

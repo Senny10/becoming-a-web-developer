@@ -28,6 +28,7 @@ async function userLogin(req, res) {
 }
 
 async function createUser(req, res) {
+	const { username, password } = req.body;
 	return await getConnection().then(async (db) => {
 		db.run("INSERT INTO users (username, password) VALUES (?, ?)", [
 			username,
@@ -39,7 +40,9 @@ async function createUser(req, res) {
 	});
 }
 
-async function updateUserById(req, res, id, username) {
+async function updateUserById(req, res) {
+	const id = getUserById(); // update this to get id from the username
+	const { username } = req.body;
 	return await getConnection().then(async (db) => {
 		db.run("UPDATE users SET username = ? WHERE id = ?", [
 			username,
@@ -51,7 +54,9 @@ async function updateUserById(req, res, id, username) {
 	});
 }
 
-async function updateUserPasswordById(req, res, id, password) {
+async function updateUserPasswordById(req, res) {
+	const id = getUserById(); // update this to get id from the username
+	const { password } = req.body;
 	return await getConnection().then(async (db) => {
 		db.run("UPDATE users SET password = ? WHERE id = ?", [
 			md5(password),
@@ -64,6 +69,8 @@ async function updateUserPasswordById(req, res, id, password) {
 }
 
 async function deleteUserById(req, res, id) {
+	const id = getUserById(); // update this to get id from the username
+
 	return await getConnection().then(async (db) => {
 		db.run("DELETE FROM users WHERE id = ?", [id]).catch((err) => {
 			console.log(err);
@@ -72,7 +79,7 @@ async function deleteUserById(req, res, id) {
 	});
 }
 module.exports = {
-	getUserById,
+	userLogin,
 	createUser,
 	updateUserById,
 	updateUserPasswordById,
