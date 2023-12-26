@@ -1,23 +1,33 @@
 const getConnection = require("../config/db");
 const md5 = require("md5");
 
-function getUserById(req, res) {
-	getConnection()
-		.then((db) => {
-			db.get("SELECT username FROM users WHERE id = ?", [id]).then((user) => {
-				res.json({
-					user,
-				});
+async function userLogin(req, res) {
+	const { username, password } = req.body;
+	if (!username || !password)
+		return res
+			.status(400)
+			.json({ message: "Username and password are required." });
+
+	const db = await getConnection();
+	db.get(
+		"SELECT * FROM users WHERE username = ? AND password = ?",
+		[username, md5(password)],
+		(err, row) => {
+			if (err) {
+				console.log(err);
+				return res.status(500).json({ error: err });
 			}
-			);
-		})
-		.catch((err) => {
-			console.error(err);
-			res.status(500).json({ error: err });
-		});
+			if (row) {
+				// User found
+			} else {
+				// User not found
+				return res.status(500).json({ message: "User not found." });
+			}
+		}
+	);
 }
 
-async function createUser(req, res, username, password) {
+async function createUser(req, res) {
 	return await getConnection().then(async (db) => {
 		db.run("INSERT INTO users (username, password) VALUES (?, ?)", [
 			username,
@@ -62,7 +72,6 @@ async function deleteUserById(req, res, id) {
 	});
 }
 module.exports = {
-	getUsers,
 	getUserById,
 	createUser,
 	updateUserById,
