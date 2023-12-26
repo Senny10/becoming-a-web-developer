@@ -1,7 +1,7 @@
 const getConnection = require("../config/db.js");
 
 async function getUserId(username) {
-	getConnection()
+	return await getConnection()
 		.then((db) => {
 			db.get("SELECT id FROM users WHERE username = ?", [username]).then(
 				(user) => {
@@ -15,5 +15,4 @@ async function getUserId(username) {
 		});
 }
 
-getUserId("test");
 module.exports = getUserId;
