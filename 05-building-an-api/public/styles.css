@@ -590,7 +590,7 @@ body.todos {
 	margin: 0;
 }
 
-h1 {
+body.todos h1 {
 	color: #e9eaec;
 	font-weight: 300;
 	letter-spacing: 10px;
@@ -606,8 +606,7 @@ body.todos #container {
 	max-width: 480px;
 	position: relative;
 }
-
-body.todos.counter {
+.counter {
 	background: #e9eaec;
 	border-radius: 50%;
 	color: #3c3b3b;
@@ -623,14 +622,14 @@ body.todos.counter {
 	width: 30px;
 }
 
-ul {
+body.todos ul {
 	background: #161f24;
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
 
-li {
+body.todos li {
 	background: #8e958a;
 	border-top: dotted 1px rgba(0, 0, 0, 0.1);
 	color: #fafafb;
@@ -666,7 +665,7 @@ li.fold {
 	}
 }
 
-form {
+body.todos form {
 	height: 86px;
 	margin: auto;
 	max-width: 440px;
@@ -676,11 +675,11 @@ form {
 	position: relative;
 }
 
-input[type="checkbox"] {
+body.todos input[type="checkbox"] {
 	display: none;
 }
 
-input[type="checkbox"] + .check {
+body.todos input[type="checkbox"] + .check {
 	border: solid 1px rgba(0, 0, 0, 0.2);
 	border-radius: 50%;
 	cursor: pointer;
@@ -693,7 +692,7 @@ input[type="checkbox"] + .check {
 	width: 20px;
 }
 
-input[type="checkbox"]:checked + .check:before {
+body.todos input[type="checkbox"]:checked + .check:before {
 	background: #fafafb;
 	content: "";
 	height: 1px;
@@ -704,7 +703,7 @@ input[type="checkbox"]:checked + .check:before {
 	width: 7.5px;
 }
 
-input[type="checkbox"]:checked + .check:after {
+body.todos input[type="checkbox"]:checked + .check:after {
 	background: #fafafb;
 	content: "";
 	height: 1px;
@@ -715,14 +714,14 @@ input[type="checkbox"]:checked + .check:after {
 	width: 20px;
 }
 
-input[type="text"],
-button[type="submit"] {
+body.todos input[type="text"],
+body.todos button[type="submit"] {
 	border: none;
 	font-size: 16px;
 	outline: none;
 }
 
-input[type="text"] {
+body.todos input[type="text"] {
 	background: #e9eaec;
 	box-sizing: border-box;
 	color: #b3b3b3;
@@ -732,7 +731,7 @@ input[type="text"] {
 	width: 100%;
 }
 
-button[type="submit"] {
+body.todos button[type="submit"] {
 	background: #3c3b3b;
 	color: #e9eaec;
 	cursor: pointer;
@@ -743,12 +742,12 @@ button[type="submit"] {
 	width: 45.7px;
 }
 
-button[type="submit"],
-span {
+body.todos button[type="submit"],
+body.todos span {
 	position: relative;
 }
 
-button[type="submit"]:hover {
+body.todos button[type="submit"]:hover {
 	background: #494848;
 }
 
