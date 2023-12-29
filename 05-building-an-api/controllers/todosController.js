@@ -16,20 +16,12 @@ async function getTodoById(req, res, id) {
 		});
 	});
 }
-async function createTodo(
-	req,
-	res,
-	id,
-	name,
-	description,
-	dueDate,
-	completed,
-	listId
-) {
+async function createTodo(req, res) {
+	const { listId, task, completed } = req.body;
 	return await getConnection().then(async (db) => {
 		db.run(
-			"INSERT INTO todos (id, name, description, due_date, completed, list_id) VALUES (?, ?, ?, ?, ?, ?)",
-			[id, name, description, dueDate, completed, listId]
+			"INSERT INTO todos (list_id, task, due_date, completed, list_id) VALUES (?, ?, ?, ?, ?, ?)",
+			[listId, task, dueDate, completed]
 		).catch((err) => {
 			console.log(err);
 			res.status(500).json({ error: err });
