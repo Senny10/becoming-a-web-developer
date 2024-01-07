@@ -3,6 +3,8 @@ const getConnection = require("./config/db");
 // See https://fakerjs.dev/
 const { faker } = require('@faker-js/faker');
 const numberOfUsers = faker.number.int({ min: 1, max: 10 });
+const ListofLists = [];
+const numberOfTasks = 5 * ListofLists.length;
 
 // Create an user object that includes name and password
 function createUser() {
@@ -27,7 +29,15 @@ function createList() {
 
 }
 // Create an array of todo object that includes task, list_id and complete
+function createTask() {
 
+    const task = {
+        task: faker.lorem.sentence(),
+        list_id: ListofLists[Math.random(0, ListofLists.length - 1)],
+        complete: faker.datatype.boolean(),
+    }
+    return task;
+}
 
 
 // (async () => {
