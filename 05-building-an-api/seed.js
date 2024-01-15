@@ -1,43 +1,41 @@
 const getConnection = require("./config/db");
 
 // See https://fakerjs.dev/
-const { faker } = require('@faker-js/faker');
+const { faker } = require("@faker-js/faker");
 const numberOfUsers = 5;
 const ListofLists = [];
 const numberOfTasks = 5 * ListofLists.length;
 
 // Create an user object that includes name and password
 function createUser() {
-    const user = {
-        username: faker.internet.userName(),
-        password: faker.internet.password(),
-    }
-    return user;
+	const user = {
+		username: faker.internet.userName(),
+		password: faker.internet.password(),
+	};
+	return user;
 }
 
 // Create a list object that includes name user_id and url_id
 function createList() {
-    const name = faker.lorem.words(2).toUpperCase();
-    const url_id = name.toLowerCase();
+	const name = faker.lorem.words(2).toUpperCase();
+	const url_id = name.toLowerCase();
 
-    const list = {
-        name: name,
-        user_id: faker.number.int({ min: 1, max: numberOfUsers }),
-        url_id: url_id,
-    }
-    return list;
+	const list = {
+		name: name,
+		user_id: faker.number.int({ min: 1, max: numberOfUsers }),
+		url_id: url_id,
+	};
+	return list;
 }
 // Create an array of todo object that includes task, list_id and complete
 function createTask() {
-
-    const task = {
-        task: faker.lorem.sentence(),
-        list_id: ListofLists[Math.random(0, ListofLists.length - 1)],
-        complete: faker.datatype.boolean(),
-    }
-    return task;
+	const task = {
+		task: faker.lorem.sentence(),
+		list_id: ListofLists[Math.random(0, ListofLists.length - 1)],
+		complete: faker.datatype.boolean(),
+	};
+	return task;
 }
-
 
 // (async () => {
 //     getConnection().then(async (db) => {
@@ -99,68 +97,75 @@ function createTask() {
 //     })
 //     .catch(console.error);
 
-
 const fakeUser = () => ({
-    username: faker.internet.userName(),
-    password: faker.internet.password(),
+	username: faker.internet.userName(),
+	password: faker.internet.password(),
 });
 
-const insertUser = (db, {username, password}) =>
-    db.run(
-        'INSERT INTO users (username, password) VALUES (?, ?)', 
-        [username, password],
-    ).then(insert => ({username, password, id: insert.lastID}));
+const insertUser = (db, { username, password }) =>
+	db
+		.run("INSERT INTO users (username, password) VALUES (?, ?)", [
+			username,
+			password,
+		])
+		.then((insert) => ({ username, password, id: insert.lastID }));
 
+const fakeList = () => {
+	const name = faker.lorem.words(2).toUpperCase();
+	const url_id = name.toLowerCase().replace(/\s/, "_");
 
-const fakeList = ({id: user_id}) => {
-    const name = faker.lorem.words(2).toUpperCase();
-    const url_id = name.toLowerCase().replace(/\s/, '_');
-
-    return {name, user_id, url_id};
+	return { name, user_id, url_id };
 };
 
-const insertList = (db, {name, user_id, url_id}) => 
-    db.run(
-        'INSERT INTO lists (name, user_id, url_id) VALUES (?, ?, ?)', 
-        [name, user_id, url_id],
-    ).then(insert => ({name, user_id, url_id, id: insert.lastID}));
+const insertList = (db, { name, user_id, url_id }) =>
+	db
+		.run("INSERT INTO lists (name, user_id, url_id) VALUES (?, ?, ?)", [
+			name,
+			user_id,
+			url_id,
+		])
+		.then((insert) => ({ name, user_id, url_id, id: insert.lastID }));
 
-const fakeTodo = ({id: list_id}) => ({
-    task: faker.lorem.sentence(),
-    list_id,
-    complete: faker.datatype.boolean(),
+const fakeTodo = ({ id: list_id }) => ({
+	task: faker.lorem.sentence(),
+	list_id,
+	complete: faker.datatype.boolean(),
 });
 
-const insertTodo = (db, {list_id, task, complete}) => 
-    db.run(
-        'INSERT INTO todos (list_id, task, complete) VALUES (?, ?, ?)',
-        [list_id, task, complete],
-    ).then(insert => ({list_id, task, complete, id: insert.lastID}));
+const insertTodo = (db, { list_id, task, complete }) =>
+	db
+		.run("INSERT INTO todos (list_id, task, complete) VALUES (?, ?, ?)", [
+			list_id,
+			task,
+			complete,
+		])
+		.then((insert) => ({ list_id, task, complete, id: insert.lastID }));
 
-const makeFakes = (count, factory) => new Array(count).fill(null).map(() => factory());
+const makeFakes = (count, factory) =>
+	new Array(count).fill(null).map(() => factory());
 
 getConnection()
-    .then(async (db) => {
-        await db.run("DELETE FROM todos");
-        await db.run("DELETE FROM lists");
-        await db.run("DELETE FROM users");
+	.then(async (db) => {
+		await db.run("DELETE FROM todos");
+		await db.run("DELETE FROM lists");
+		await db.run("DELETE FROM users");
 
-        const fakeUsers = makeFakes(numberOfUsers, fakeUser);
+		const fakeUsers = makeFakes(numberOfUsers, fakeUser);
 
-        for (const fakeUser of fakeUsers) {
-            const createdUser = await insertUser(db, fakeUser);
+		for (const fakeUser of fakeUsers) {
+			await insertUser(db, fakeUser);
+// TODO: Ask Lawrence how to get the id of the user
+			const fakeLists = makeFakes(numberOfUsers, fakeList);
 
-            const fakeLists = new Array(numberOfUsers).fill(null).map(() => fakeList(createdUser));
+			for (const fakeList of fakeLists) {
+				await insertList(db, fakeList);
 
-            for (const fakeList of fakeLists) {
-                const createdList = await insertList(db, fakeList);
-                
-                const fakeTodos = new Array(numberOfUsers).fill(null).map(() => fakeTodo(createdList));
+				const fakeTodos = makeFakes(numberOfUsers, fakeTodo);
 
-                for (const fakeTodo of fakeTodos) {
-                    await insertTodo(db, fakeTodo);
-                }
-            }
-        }
-    })
-    .catch(console.error);
+				for (const fakeTodo of fakeTodos) {
+					await insertTodo(db, fakeTodo);
+				}
+			}
+		}
+	})
+	.catch(console.error);
