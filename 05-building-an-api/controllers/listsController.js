@@ -1,6 +1,6 @@
 const getConnection = require("../config/db");
 
-// 3. Add pagination to this endpoint
+// TODO 3. Add pagination to this endpoint
 // /api/lists?page=1 - return the second page of results
 // total - is the total number of rows in the lists table
 // perPage - the number of results per page
@@ -51,27 +51,44 @@ function createList(req, res) {
 // 1. Turn this into a non-async function
 // respond with the updated list
 // 200
-async function updateList(req, res) {
-	return await getConnection().then(async (db) => {
-		db.run("UPDATE lists SET name = ? WHERE id = ?", [urlId, id]).catch(
-			(err) => {
-				console.log(err);
-				res.status(500).json({ error: err });
-			}
-		);
-	});
+function updateList(req, res) {
+	const list = req.body;
+
+	getConnection()
+		.then((db) => {
+			db.run("UPDATE lists SET name = ? WHERE url_id = ?", [
+				list.name,
+				list.urlId,
+			]).then(() => {
+				res.status(200).json({
+					list,
+				});
+			});
+		})
+		.catch((err) => {
+			console.log(err);
+			res.status(500).json({ error: err });
+		});
 }
 
 // 2. Turn this into a non-async function
 // respond with nothing
 // 204
-async function deleteList(req, res, id) {
-	return await getConnection().then(async (db) => {
-		db.run("DELETE FROM lists WHERE id = ?", [id]).catch((err) => {
+function deleteList(req, res) {
+	const list = req.body;
+
+	getConnection()
+		.then((db) => {
+			db.run("DELETE FROM lists WHERE url_id = ?", [list.urlId]).then(
+				() => {
+					res.status(204).json({ message: "List deleted" });
+				}
+			);
+		})
+		.catch((err) => {
 			console.log(err);
 			res.status(500).json({ error: err });
 		});
-	});
 }
 
 module.exports = { getLists, createList, updateList, deleteList };
