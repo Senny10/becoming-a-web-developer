@@ -31,37 +31,56 @@ function userLogin(req, res) {
 		});
 }
 
-async function createUser(req, res) {
+function createUser(req, res) {
 	const { username, password } = req.body;
-	return await getConnection().then(async (db) => {
-		db.run("INSERT INTO users (username, password) VALUES (?, ?)", [
-			username,
-			md5(password),
-		]).catch((err) => {
+	if (!username || !password)
+		return res
+			.status(400)
+			.json({ message: "Username and password are required." });
+	getConnection()
+		.then((db) => {
+			db.run("INSERT INTO users (username, password) VALUES (?, ?)", [
+				username,
+				md5(password),
+			]).then((row, err) => {
+				if (err) {
+					console.log(err);
+					return res.status(500).json({ error: err });
+				}
+				return res.status(200).json({ message: "User created." });
+			});
+		})
+		.catch((err) => {
 			console.log(err);
-			res.status(500).json({ error: err });
+			res.status(404).json({ message: "User not found." });
 		});
-	});
 }
-
-async function updateUserById(req, res) {
+function updateUserById(req, res) {
 	const { username } = req.body;
 	const id = getUserId(username);
-	return await getConnection().then(async (db) => {
-		db.run("UPDATE users SET username = ? WHERE id = ?", [
-			username,
-			id,
-		]).catch((err) => {
+	getConnection()
+		.then((db) => {
+			db.run("UPDATE users SET username = ? WHERE id = ?", [
+				username,
+				id,
+			]).then((row, err) => {
+				if (err) {
+					console.log(err);
+					return res.status(500).json({ error: err });
+				}
+				return res.status(200).json({ message: "User updated." });
+			});
+		})
+		.catch((err) => {
 			console.log(err);
-			res.status(500).json({ error: err });
+			res.status(404).json({ message: "User not found." });
 		});
-	});
 }
 
-async function updateUserPasswordById(req, res) {
+function updateUserPasswordById(req, res) {
 	const { username, password } = req.body;
 	const id = getUserId(username);
-	return await getConnection().then(async (db) => {
+	getConnection().then((db) => {
 		db.run("UPDATE users SET password = ? WHERE id = ?", [
 			md5(password),
 			id,
@@ -72,16 +91,18 @@ async function updateUserPasswordById(req, res) {
 	});
 }
 
-async function deleteUserById(req, res, id) {
+function deleteUserById(req, res) {
 	const { username } = req.body;
 	const id = getUserId(username);
-	return await getConnection().then(async (db) => {
+	getConnection().then((db) => {
 		db.run("DELETE FROM users WHERE id = ?", [id]).catch((err) => {
 			console.log(err);
 			res.status(500).json({ error: err });
 		});
 	});
 }
+
+
 module.exports = {
 	userLogin,
 	createUser,
