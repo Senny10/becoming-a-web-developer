@@ -80,15 +80,23 @@ function updateUserById(req, res) {
 function updateUserPasswordById(req, res) {
 	const { username, password } = req.body;
 	const id = getUserId(username);
-	getConnection().then((db) => {
-		db.run("UPDATE users SET password = ? WHERE id = ?", [
-			md5(password),
-			id,
-		]).catch((err) => {
+	getConnection()
+		.then((db) => {
+			db.run("UPDATE users SET password = ? WHERE id = ?", [
+				md5(password),
+				id,
+			]).then((row, err) => {
+				if (err) {
+					console.log(err);
+					return res.status(500).json({ error: err });
+				}
+				return res.status(200).json({ message: "User updated." });
+			});
+		})
+		.catch((err) => {
 			console.log(err);
 			res.status(500).json({ error: err });
 		});
-	});
 }
 
 function deleteUserById(req, res) {
@@ -101,7 +109,6 @@ function deleteUserById(req, res) {
 		});
 	});
 }
-
 
 module.exports = {
 	userLogin,
