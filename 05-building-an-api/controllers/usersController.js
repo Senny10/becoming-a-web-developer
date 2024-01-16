@@ -2,30 +2,33 @@ const getConnection = require("../config/db");
 const md5 = require("md5");
 const getUserId = require("../middleware/getUserId");
 
-async function userLogin(req, res) {
+function userLogin(req, res) {
 	const { username, password } = req.body;
 	if (!username || !password)
 		return res
 			.status(400)
 			.json({ message: "Username and password are required." });
-
-	const db = await getConnection();
-	db.get(
-		"SELECT * FROM users WHERE username = ? AND password = ?",
-		[username, md5(password)],
-		(err, row) => {
-			if (err) {
-				console.log(err);
-				return res.status(500).json({ error: err });
-			}
-			if (row) {
-				// User found
-			} else {
-				// User not found
-				return res.status(500).json({ message: "User not found." });
-			}
-		}
-	);
+	getConnection()
+		.then((db) => {
+			db.get("SELECT * FROM users WHERE username = ? AND password = ?", [
+				username,
+				md5(password),
+			]).then((row, err) => {
+				res.json({ row });
+				if (err) {
+					console.log(err);
+					return res.status(500).json({ error: err });
+				}
+				if (row) {
+					// User found
+					return res.status(200).json({ message: "User found." });
+				}
+			});
+		})
+		.catch((err) => {
+			console.log(err);
+			res.status(404).json({ message: "User not found." });
+		});
 }
 
 async function createUser(req, res) {
