@@ -1,3 +1,12 @@
 {
-  "cSpell.words": ["AUTOINCREMENT", "uidx"]
+  "cSpell.words": ["AUTOINCREMENT", "uidx"],
+  "sqltools.useNodeRuntime": true,
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "todos",
+      "database": "${workspaceFolder:becoming-a-web-developer}/05-building-an-api/todos.db"
+    }
+  ]
 }

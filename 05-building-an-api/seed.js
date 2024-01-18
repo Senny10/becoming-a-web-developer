@@ -53,23 +53,27 @@ const makeFakes = (count, factory) =>
 getConnection()
 	.then(async (db) => {
 		await db.run("DELETE FROM todos");
+
 		await db.run("DELETE FROM lists");
+
 		await db.run("DELETE FROM users");
+
 
 		const fakeUsers = makeFakes(numberOfUsers, fakeUser);
 
 		for (const fakeUser of fakeUsers) {
 			await insertUser(db, fakeUser);
-			// TODO: Ask Lawrence how to get the id of the user
 			const fakeLists = makeFakes(numberOfUsers, fakeList);
 
 			for (const fakeList of fakeLists) {
 				await insertList(db, fakeList);
 
+
 				const fakeTodos = makeFakes(numberOfUsers, fakeTodo);
 
 				for (const fakeTodo of fakeTodos) {
 					await insertTodo(db, fakeTodo);
+					console.log("fake todos in DB");
 				}
 			}
 		}
