@@ -58,24 +58,20 @@ getConnection()
 
 		await db.run("DELETE FROM users");
 
-
 		const fakeUsers = makeFakes(numberOfUsers, fakeUser);
-
 		for (const fakeUser of fakeUsers) {
-			await insertUser(db, fakeUser);
-			const fakeLists = makeFakes(numberOfUsers, fakeList);
+			const fakeUsersinDB = await insertUser(db, fakeUser);
+			let userFactory = fakeList(user_id = fakeUsersinDB.id);
+			const fakeLists = makeFakes(numberOfUsers, userFactory);
+			// for (const fakeList of fakeLists) {
+			// 	const fakeListinDB = await insertList(db, fakeList);
 
-			for (const fakeList of fakeLists) {
-				await insertList(db, fakeList);
+			// 	const fakeTodos = makeFakes(numberOfUsers, fakeTodo(list_id = fakeListinDB.id));
+			// 	for (const fakeTodo of fakeTodos) {
+			// 		await insertTodo(db, fakeTodo);
 
-
-				const fakeTodos = makeFakes(numberOfUsers, fakeTodo);
-
-				for (const fakeTodo of fakeTodos) {
-					await insertTodo(db, fakeTodo);
-					console.log("fake todos in DB");
-				}
-			}
+			// 	}
+			// }
 		}
 	})
 	.catch(console.error);
