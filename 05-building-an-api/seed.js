@@ -3,10 +3,12 @@ const getConnection = require("./config/db");
 const { faker } = require("@faker-js/faker");
 const numberOfUsers = 5;
 
-const fakeUser = () => ({
+const fakerUser = () => ({
 	username: faker.internet.userName(),
 	password: faker.internet.password(),
+
 });
+
 
 const insertUser = (db, { username, password }) =>
 	db
@@ -14,29 +16,28 @@ const insertUser = (db, { username, password }) =>
 			username,
 			password,
 		])
-		.then((insert) => ({ username, password, id: insert.lastID }));
+		.then((insert) => ({ id: insert.lastID, username, password }));
 
-const fakeList = () => {
-	const name = faker.lorem.words(2).toUpperCase();
-	const url_id = name.toLowerCase().replace(/\s/, "_");
-
-	return { name, user_id, url_id };
+const fakerList = () => {
+	let name = faker.lorem.words(2).toUpperCase();
+	let url_id = name.toLowerCase().replace(/\s/, "_");
+	let user_id = 0;
+	return { url_id, name, user_id };
 };
 
-const insertList = (db, { name, user_id, url_id }) =>
+const insertList = (db, { url_id, name, user_id }) =>
 	db
-		.run("INSERT INTO lists (name, user_id, url_id) VALUES (?, ?, ?)", [
+		.run("INSERT INTO lists ( url_id, name, user_id) VALUES (?, ?, ?)", [
+			url_id,
 			name,
 			user_id,
-			url_id,
 		])
-		.then((insert) => ({ name, user_id, url_id, id: insert.lastID }));
+		.then((insert) => ({ id: insert.lastID, url_id, name, user_id }));
 
-const fakeTodo = ({ id: list_id }) => ({
-	task: faker.lorem.sentence(),
-	list_id,
-	complete: faker.datatype.boolean(),
-});
+const fakerTodo = (listId) => {
+	return { list_id: listId, task: faker.lorem.sentence(), complete: faker.datatype.boolean() };
+}
+
 
 const insertTodo = (db, { list_id, task, complete }) =>
 	db
@@ -45,10 +46,20 @@ const insertTodo = (db, { list_id, task, complete }) =>
 			task,
 			complete,
 		])
-		.then((insert) => ({ list_id, task, complete, id: insert.lastID }));
+		.then((insert) => ({ id: insert.lastID, list_id, task, complete }));
 
-const makeFakes = (count, factory) =>
-	new Array(count).fill(null).map(() => factory());
+const makeFakes = (count, factory) => {
+	let fakes = [];
+	for (let i = 0; i < count; i++) {
+		let fake = factory;
+		fakes.push(fake);
+	}
+	return fakes;
+}
+// new Array(count).fill(null).map(() => factory);
+// console.log(makeFakes(numberOfUsers, fakerUser()));
+// console.log(makeFakes(numberOfUsers, fakerList()));
+// console.log(makeFakes(numberOfUsers, fakerTodo(0)));
 
 getConnection()
 	.then(async (db) => {
@@ -58,20 +69,25 @@ getConnection()
 
 		await db.run("DELETE FROM users");
 
-		const fakeUsers = makeFakes(numberOfUsers, fakeUser);
+		const fakeUsers = makeFakes(numberOfUsers, fakerUser());
+
 		for (const fakeUser of fakeUsers) {
 			const fakeUsersinDB = await insertUser(db, fakeUser);
-			let userFactory = fakeList(user_id = fakeUsersinDB.id);
-			const fakeLists = makeFakes(numberOfUsers, userFactory);
-			// for (const fakeList of fakeLists) {
-			// 	const fakeListinDB = await insertList(db, fakeList);
 
-			// 	const fakeTodos = makeFakes(numberOfUsers, fakeTodo(list_id = fakeListinDB.id));
-			// 	for (const fakeTodo of fakeTodos) {
-			// 		await insertTodo(db, fakeTodo);
+			const fakeLists = makeFakes(numberOfUsers, fakerList(user_id = fakeUsersinDB.id));
 
-			// 	}
-			// }
+			for (const fakeList of fakeLists) {
+				const fakeListinDB = await insertList(db, fakeList);
+
+
+				const fakeTodos = makeFakes(
+					numberOfUsers,
+					fakerTodo(fakeListinDB.id)
+				);
+				for (const fakeTodo of fakeTodos) {
+					await insertTodo(db, fakeTodo);
+				}
+			}
 		}
 	})
 	.catch(console.error);
