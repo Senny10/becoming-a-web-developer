@@ -1,12 +1,12 @@
 const getConnection = require("./config/db");
 
 getConnection()
-	.then(async (db) => {
-		await db.run("DROP TABLE IF EXISTS todos");
-		await db.run("DROP TABLE IF EXISTS lists");
-		await db.run("DROP TABLE IF EXISTS users");
+    .then(async (db) => {
+        await db.run("DROP TABLE IF EXISTS todos");
+        await db.run("DROP TABLE IF EXISTS lists");
+        await db.run("DROP TABLE IF EXISTS users");
 
-		await db.exec(`
+        await db.exec(`
         CREATE TABLE lists (
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         url_id TEXT NOT NULL,
@@ -26,7 +26,7 @@ getConnection()
         username TEXT NOT NULL,
         password TEXT NOT NULL
         );
-        CREATE UNIQUE INDEX uidx_username ON users (username);
-        CREATE UNIQUE INDEX uidx_lid ON lists (url_id); `);
-	})
-	.catch(console.error);
+        CREATE UNIQUE INDEX IF NOT EXISTS uidx_username ON users (username);
+        CREATE UNIQUE INDEX IF NOT EXISTS uidx_lid ON lists (url_id); `);
+    })
+    .catch(console.error);
