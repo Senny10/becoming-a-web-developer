@@ -16,7 +16,6 @@ const fakerLists = Array.from({ length: listLength }, () => {
 	return { url_id, name, user_id };
 });
 
-
 const fakerTodos = Array.from({ length: numberOfUsers }, () => {
 	return {
 		list_id: faker.number.int({ min: 1, max: listLength }),
@@ -60,22 +59,34 @@ getConnection()
 			db.run("INSERT INTO users (username, password) VALUES (?, ?)", [
 				fakeUser.username,
 				fakeUser.password,
-			]).then((insert) => ({ id: insert.lastID, username: insert.username, password: insert.password }));
+			]).then((insert) => ({
+				id: insert.lastID,
+				username: insert.username,
+				password: insert.password,
+			}));
 		}
 
 		for (const fakeList of fakerLists) {
-			db.run("INSERT INTO lists ( url_id, name, user_id) VALUES (?, ?, ?)", [
-				fakeList.url_id,
-				fakeList.name,
-				fakeList.user_id,
-			]).then((insert) => ({ id: insert.lastID, url_id: insert.url_id, name: insert.name, user_id: insert.user_id }));
+			db.run(
+				"INSERT INTO lists ( url_id, name, user_id) VALUES (?, ?, ?)",
+				[fakeList.url_id, fakeList.name, fakeList.user_id]
+			).then((insert) => ({
+				id: insert.lastID,
+				url_id: insert.url_id,
+				name: insert.name,
+				user_id: insert.user_id,
+			}));
 
 			for (const fakeTodo of fakerTodos) {
-				db.run("INSERT INTO todos (list_id, task, complete) VALUES (?, ?, ?)", [
-					fakeTodo.list_id,
-					fakeTodo.task,
-					fakeTodo.complete,
-				]).then((insert) => ({ id: insert.lastID, list_id: insert.list_id, task: insert.task, complete: insert.complete }));
+				db.run(
+					"INSERT INTO todos (list_id, task, complete) VALUES (?, ?, ?)",
+					[fakeTodo.list_id, fakeTodo.task, fakeTodo.complete]
+				).then((insert) => ({
+					id: insert.lastID,
+					list_id: insert.list_id,
+					task: insert.task,
+					complete: insert.complete,
+				}));
 			}
 		}
 	})
