@@ -96,8 +96,6 @@ getConnection()
 						}));
 				}
 			}
-
-			console.log(`Created user ${insertedUser.username}`);
 		}
 	})
 	.catch(console.error);
