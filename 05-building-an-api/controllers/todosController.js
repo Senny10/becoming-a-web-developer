@@ -1,5 +1,30 @@
 const getConnection = require("../config/db");
 
+
+function getTodoByList(req, res) {
+	console.log(req.params);
+	getConnection().then((db) => {
+		db.get("SELECT * FROM todos WHERE user_id = ? AND url_id = ?", [
+			userId,
+			url_id,
+		])
+			.then((row, err) => {
+				res.json({ row });
+				if (err) {
+					console.log(err);
+					return res.status(500).json({ error: err });
+				}
+				if (row) {
+					return res.status(200).json({ message: "Todos found" });
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+				res.status(404).json({ message: "Todos not found." });
+			});
+	});
+}
+
 function getTodoByUserId(req, res) {
 	const { userId, url_id } = req.body;
 	getConnection().then((db) => {
@@ -95,6 +120,7 @@ function deleteTodoById(req, res) {
 }
 
 module.exports = {
+	getTodoByList,
 	getTodoByUserId,
 	createTodo,
 	updateTodoById,

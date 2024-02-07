@@ -5,11 +5,25 @@ const getConnection = require("../config/db");
 // total - is the total number of rows in the lists table
 // perPage - the number of results per page
 function getLists(req, res) {
+	let query = "SELECT * FROM lists";
+	const queryParameters = [];
+
+	if (req.query.user_id) {
+		query += " WHERE user_id = ?";
+		queryParameters.push(req.query.user_id);
+	}
+
 	getConnection()
 		.then((db) => {
-			db.all("SELECT * FROM lists").then((lists) => {
+			db.all(query, queryParameters).then((lists) => {
 				res.json({
-					lists,
+					lists: lists.map(list => ({
+						...list,
+						meta: {
+							view: `http://localhost:8000/api/list/${list.id}`,
+							create_todo: `http://localhost:8000/api/list/${list.id}/todo`,
+						},
+					})),
 				});
 			});
 		})

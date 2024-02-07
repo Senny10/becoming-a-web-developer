@@ -175,3 +175,24 @@ Use these points to question what you've done and to build your understanding of
 - [ ] Notice how the endpoints you created for different object types were very similar. This is one of the benefits of a ReSTful approach - you define the data models and then you perform standard operations on them.
 - [ ] How would you go about documenting your new API? There are tools that help you do this. Try and use OpenAPI to document your endpoints. [`openapi`]
 - [ ] Make sure your API is consistent - that it uses JSON throughout and that the status codes and URL patterns it uses are always the same for different object types. Consistency is one of the key factors of a well-constructed API.
+
+
+## API Routes
+
+/api
+USERS
+GET /api/user - returns a set of users
+GET /api/user/:userId - returns info about a specific user.
+DELETE /api/user/:userId - delete a specific user.
+PUT | PATCH /api/user/:userId - update a specific user.
+LISTS
+GET /api/list - return a set of lists that a user has access to.
+POST /api/list - create a new list.
+GET /api/list/:listId - return information about a specific list.
+DELETE /api/list/:listId - deletes a given list.
+GET /api/list/:listId/todo - returns a set of todos that are part of the given list.
+POST /api/list/:listId/todo - create a new todo on the list listId
+GET /api/list/:listId/todo/:todoId - get information about a specific todo
+DELETE /api/list/:listId/todo/:todoId - deletes a given todo.
+
+https://editor.swagger.io/
