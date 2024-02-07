@@ -2,7 +2,9 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const PORT = process.env.PORT || 8000;
-const listRoutes = require("./routes/api/lists");
+// const listRoutes = require("./routes/api/lists");
+// const todoRoutes = require("./routes/api/todos");
+
 const bodyParser = require("body-parser");
 
 app.use(express.urlencoded({ extended: true }));
@@ -12,7 +14,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "/public")));
 
 app.use("/", require("./routes/root"));
-app.use(listRoutes);
+// app.use(listRoutes);
+// app.use(todoRoutes);
 app.all("*", (req, res) => {
 	res.status(404);
 	if (req.accepts("html")) {
