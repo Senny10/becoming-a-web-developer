@@ -13,24 +13,26 @@ function getLists(req, res) {
 		queryParameters.push(req.query.user_id);
 	}
 
-	getConnection()
-		.then((db) => {
-			db.all(query, queryParameters).then((lists) => {
-				res.json({
-					lists: lists.map(list => ({
-						...list,
-						meta: {
-							view: `http://localhost:8000/api/list/${list.id}`,
-							create_todo: `http://localhost:8000/api/list/${list.id}/todo`,
-						},
-					})),
-				});
+	// Pagination
+	const perPage = req.query.per_page || 10; // Number of results per page
+	const page = req.query.page || 1; // Page number
+	const offset = (page - 1) * perPage; // Calculate the offset
+
+	query += " LIMIT ? OFFSET ?";
+	queryParameters.push(perPage, offset);
+
+	getConnection().then((db) => {
+		db.all(query, queryParameters).then((lists) => {
+			res.json({
+				lists: lists.map((list) => ({
+					...list,
+					meta: {
+						view: `http://localhost:8000/api/list/${list.id}`,
+					},
+				})),
 			});
-		})
-		.catch((err) => {
-			console.error(err);
-			res.status(500).json({ error: err });
 		});
+	});
 }
 
 function createList(req, res) {
