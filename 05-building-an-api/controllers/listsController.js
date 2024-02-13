@@ -6,30 +6,44 @@ const getConnection = require("../config/db");
 // perPage - the number of results per page
 function getLists(req, res) {
 	let query = "SELECT * FROM lists";
+	let countQuery = "SELECT count(id) AS count FROM lists";
+
 	const queryParameters = [];
+	const filter = {};
 
 	if (req.query.user_id) {
 		query += " WHERE user_id = ?";
 		queryParameters.push(req.query.user_id);
+		countQuery += " WHERE user_id = ?";
+		filter.user_id = req.query.user_id;
 	}
 
 	// Pagination
 	const perPage = req.query.per_page || 10; // Number of results per page
-	const page = req.query.page || 1; // Page number
+	const page = parseInt(req.query.page ?? 1); // Page number (Null coalescing operator)
 	const offset = (page - 1) * perPage; // Calculate the offset
 
-	query += " LIMIT ? OFFSET ?";
-	queryParameters.push(perPage, offset);
-
 	getConnection().then((db) => {
-		db.all(query, queryParameters).then((lists) => {
-			res.json({
-				lists: lists.map((list) => ({
-					...list,
+		db.all(countQuery, queryParameters).then(([{ count }]) => {
+			query += " LIMIT ? OFFSET ?";
+			queryParameters.push(perPage, offset);
+			db.all(query, queryParameters).then((lists) => {
+				res.json({
+					lists: lists.map((list) => ({
+						...list,
+						meta: {
+							view: `http://localhost:8000/api/list/${list.id}`,
+						},
+					})),
 					meta: {
-						view: `http://localhost:8000/api/list/${list.id}`,
+						filter,
+						pagination: {
+							page,
+							perPage,
+							totalPages: Math.ceil(count / perPage),
+						},
 					},
-				})),
+				});
 			});
 		});
 	});
