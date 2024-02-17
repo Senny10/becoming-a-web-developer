@@ -20,7 +20,7 @@ function getLists(req, res) {
 
 	// Pagination
 	const perPage = req.query.per_page || 10; // Number of results per page
-	const page = parseInt(req.query.page ?? 1); // Page number (Null coalescing operator)
+	const page = parseInt(req.query.page ?? 1); // Page number (Null coalescing operator OR safe navigation operator)
 	const offset = (page - 1) * perPage; // Calculate the offset
 
 	getConnection().then((db) => {
